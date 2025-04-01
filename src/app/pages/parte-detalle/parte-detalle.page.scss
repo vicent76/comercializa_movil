@@ -1,0 +1,74 @@
+.grptitle {
+    background-color: #718dba;
+    color: white !important;
+
+}
+
+ion-item ion-label {
+  font-size: 1.2em !important;
+  font-weight: bold !important;
+  color: rgb(135, 135, 179) !important;
+  opacity: 1 !important
+}
+
+:host{
+    ion-button{
+      --transition: background-color,opacity 100ms linear;
+      --ripple-color: currentColor;
+      --border-radius: 50%;
+      --border-width: 0;
+      --border-style: none;
+      --border-color: initial;
+      --padding-top: 0;
+      --padding-end: 0;
+      --padding-bottom: 0;
+      --padding-start: 0;
+      margin-left: 0;
+      margin-right: 0;
+      margin-top: 0;
+      margin-bottom: 0;   
+      display: block;     
+      width: 36px;
+      height: 36px;
+      position: relative;
+      float: right;
+      font-size: 14px;
+      text-align: center;
+      text-overflow: ellipsis;
+      text-transform: none;
+      white-space: nowrap;
+      -webkit-font-kerning: none;
+      font-kerning: none;
+      ion-icon{
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+    }
+   
+  }
+
+  ion-button[title]::after {
+    content: attr(title);
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    /* Ajusta la posición del tooltip */
+  bottom: calc(50% + 8px); /* Mueve el tooltip arriba del botón */
+  left: 50%; /* Centra el tooltip horizontalmente */
+  transform: translateX(-50%); /* Centra el tooltip horizontalmente */
+  }
+  
+  ion-button:hover[title]::after {
+    opacity: 1;
+  }
+  
+
+  

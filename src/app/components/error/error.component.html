@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar  color="danger">
+    <ion-title text-center>
+      ERROR
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card *ngIf="!sinConexion">
+    <ion-card-header class="ionic-text-wrap">
+      <ion-card-title>Se ha producido un error</ion-card-title>
+      <ion-card-subtitle>Puede cerrar esta pantalla pulsando en el aspa de la parte superior</ion-card-subtitle>
+      <ion-card-subtitle color="danger">{{Error.message}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content class="ionic-text-wrap">
+      <ion-label color="primary">
+        {{errText}}
+      </ion-label>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="sinConexion">
+    <ion-card-header class="ionic-text-wrap">
+      <ion-card-title>Sin conexion</ion-card-title>
+      <ion-card-subtitle>No se puede acceder al servidor, verifique que su dispositivo tiene conexión de datos activa. Puede cerrar esta pantalla pulsando en el aspa de la parte superior</ion-card-subtitle>
+      <ion-card-subtitle color="danger">{{Error.message}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content class="ionic-text-wrap">
+      <ion-label color="primary">
+        {{errText}}
+      </ion-label>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

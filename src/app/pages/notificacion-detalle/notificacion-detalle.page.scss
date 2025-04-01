@@ -1,0 +1,53 @@
+.myGreen {
+    color: teal;
+    font-size: 0.9em;
+}
+
+.header-estile {
+    background-color: green!important;
+    color: blanchedalmond !important;
+}
+
+ion-col ion-label {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+:host{
+    ion-button{
+      --transition: background-color,opacity 100ms linear;
+      --ripple-color: currentColor;
+      --border-radius: 50%;
+      --border-width: 0;
+      --border-style: none;
+      --border-color: initial;
+      --padding-top: 0;
+      --padding-end: 0;
+      --padding-bottom: 0;
+      --padding-start: 0;
+      margin-left: 0;
+      margin-right: 0;
+      margin-top: 0;
+      margin-bottom: 0;   
+      display: block;     
+      width: 36px;
+      height: 36px;
+      position: relative;
+      float: right;
+      font-size: 14px;
+      text-align: center;
+      text-overflow: ellipsis;
+      text-transform: none;
+      white-space: nowrap;
+      -webkit-font-kerning: none;
+      font-kerning: none;
+      ion-icon{
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+    }
+}
+

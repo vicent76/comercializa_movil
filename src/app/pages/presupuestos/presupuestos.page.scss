@@ -1,0 +1,31 @@
+ion-item ion-label {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    color: rgb(135, 135, 179) !important;
+    opacity: 1 !important
+  }
+
+  .color {
+    background: #9ac7bd !important;
+   
+}
+.color2 {
+    background: #aa628c !important;
+}
+
+.Selected-color {
+    background: #e6d32f !important;
+}
+
+.myGreen {
+  font-size: 0.9em;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.item-background-color{
+  --ion-item-background: transparent !important;
+}
+
+
+  

@@ -1,0 +1,35 @@
+<app-header titulo="Notificaciones"></app-header>
+<app-cabecera></app-cabecera>
+
+<ion-content>
+  <div *ngIf="notificaciones">
+    <ion-list *ngIf="notificaciones.length > 0" style=" margin: 0px 10px 0px 10px">
+      <div *ngFor="let notificacion of notificaciones" [ngClass]="{'color': notificacion.estado != 'LEIDO'}">
+          <div [ngClass]="{'color2': notificacion.estado == 'LEIDO'}">
+              <div class="myGreen" (click)="mostrarDetalle(notificacion)">
+                  <ion-item lines="none" class="item-background-color">
+                    <ion-grid>
+                      <ion-row  >
+                        <ion-col size="10">
+                          <div *ngIf="notificacion.presupuesto">
+                            <strong>{{notificacion.presupuestoText}}</strong> 
+                          </div>
+                          <div *ngIf="notificacion.urgente">
+                            <strong>{{notificacion.urgenteText}}</strong> 
+                          </div>
+                            <strong>FECHA:</strong> {{notificacion.fechaFormat}}<br>
+                            <strong>ASUNTO</strong>  {{notificacion.asunto}}
+                        </ion-col>
+                        <ion-col size="2" style="padding-top: 2%;">
+                            <ion-icon name="log-in" size="large" item-end></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                    </ion-grid>
+                  </ion-item>
+              </div>
+         </div>
+      </div>
+    </ion-list>
+  </div>
+  </ion-content>
+<app-footer></app-footer>

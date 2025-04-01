@@ -1,0 +1,137 @@
+<app-header titulo="Firma"></app-header>
+<app-cabecera></app-cabecera>
+
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <form name="frmFirma" #fFirma="ngForm" lines="none"> 
+      <ion-label position="stacked" color="cabecera">Datos del firmante.</ion-label>
+      <div *ngIf="!parte.firma && !parte.noFirma">
+        <ion-item >
+          <ion-label position="stacked" color="cabecera">Nombre:</ion-label>
+          <ion-input  
+            [(ngModel)]="parteModificado.nombreFirmante" 
+            name="nombreFirmante" 
+            type="text" required>
+          </ion-input>
+        </ion-item>
+        <ion-item >
+          <ion-label  position="stacked" color="cabecera">Apellidos:</ion-label>
+          <ion-input  
+            [(ngModel)]="parteModificado.apellidosFirmante" 
+            name="apellidosFirmante" 
+            type="text" required>
+          </ion-input>
+        </ion-item>
+        <ion-item >
+          <ion-label position="stacked" color="cabecera" stacked>DNI:</ion-label>
+          <ion-input  
+            [(ngModel)]="parteModificado.dniFirmante" 
+            name="dniFirmante" 
+            type="text" 
+            (ionBlur)="compruebaDni($event)"
+            required>
+          </ion-input>
+        </ion-item>
+        <ion-item >
+          <ion-label position="stacked" color="cabecera" stacked>cargo:</ion-label>
+          <ion-input  
+            [(ngModel)]="parteModificado.cargoFirmante" 
+            name="cargoFirmante" 
+            type="text" required>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label style="font-size: 1em;">No desea firmar el parte</ion-label>
+          <div *ngIf="parteModificado.noFirma == false">
+            <ion-checkbox color="light" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+          </div>
+          <div *ngIf="parteModificado.noFirma == true">
+            <ion-checkbox color="light" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}" checked></ion-checkbox>
+          </div>
+        </ion-item>
+      </div>
+
+      <div *ngIf="parte.firma || parte.noFirma">
+        <ion-item >
+          <ion-label  position="stacked" color="cabecera" stacked>Nombre:</ion-label>
+          <ion-input  
+            [(ngModel)]="parteModificado.nombreFirmante" 
+            name="nombreFirmante" 
+            type="text" disabled>
+          </ion-input>
+        </ion-item>
+        <ion-item >
+          <ion-label  position="stacked" color="cabecera" >Apellidos:</ion-label>
+          <ion-input  
+            [(ngModel)]="parteModificado.apellidosFirmante" 
+            name="apellidosFirmante" 
+            type="text" disabled>
+          </ion-input>
+        </ion-item>
+        <ion-item >
+          <ion-label  position="stacked" color="cabecera">DNI:</ion-label>
+          <ion-input  
+            [(ngModel)]="parteModificado.dniFirmante" 
+            name="dniFirmante" 
+            type="text" 
+            disabled>
+          </ion-input>
+        </ion-item>
+        <ion-item >
+          <ion-label position="stacked" color="cabecera" stacked>cargo:</ion-label>
+          <ion-input  
+            [(ngModel)]="parteModificado.cargoFirmante" 
+            name="cargoFirmante" 
+            type="text" disabled>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label style="font-size: 1em;">No desea firmar el parte</ion-label>
+          <div *ngIf="parteModificado.noFirma == false">
+            <ion-checkbox color="light" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}" disabled></ion-checkbox>
+          </div>
+          <div *ngIf="parteModificado.noFirma == true">
+            <ion-checkbox color="light" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}" disabled></ion-checkbox>
+          </div>
+        </ion-item>
+      
+      </div>
+      
+      <div [ngClass]="{'resize': parte.firma}" style="margin: 1,1,1,1;  border: 1px solid grey;">
+        <canvas class="signature-pad-canvas" #canvas style="touch-action: none;"></canvas>
+      </div>
+      <ion-item lines="none" *ngIf="parteModificado.firma" >
+        <ion-img class="vehicle-img"
+            [src]="parteModificado.firma">
+        </ion-img>
+    </ion-item>
+    </form>
+  </ion-list>
+</ion-content>
+  <ion-toolbar>
+    <ion-item  lines="none" *ngIf="!parte.firma && !parte.noFirma">
+      <ion-grid *ngIf="parte && parte.confirmado && parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6">
+        <ion-row>
+          <ion-col size="9">
+            <ion-button float-right color="danger" (click)="clear()" title="Limpiar datos"><ion-icon name="arrow-undo-circle-outline"></ion-icon></ion-button>
+          </ion-col>
+          <ion-col >
+            <ion-button float-right color="tertiary"  (click)="save()" title="Guardar"><ion-icon name="checkbox"></ion-icon></ion-button>
+          </ion-col>
+        </ion-row>   
+      </ion-grid>
+    </ion-item>
+    <ion-item  lines="none" *ngIf="!parte.firma && parte.noFirma">
+      <ion-grid *ngIf="parte && parte.confirmado && parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6">
+        <ion-row>
+          <ion-col size="12">
+            <ion-button float-right color="danger" (click)="deleteFirma()" title="Borrar firma"><ion-icon name="trash-outline"></ion-icon></ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+    </ion-item>
+  </ion-toolbar>
+
+<app-footer></app-footer>

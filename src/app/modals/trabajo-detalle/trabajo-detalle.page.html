@@ -1,0 +1,310 @@
+<ion-header>
+      <!-- <ion-buttons end>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="1">
+              <button ion-button icon-only (click)="dismiss()">
+                <ion-icon name="arrow-back" size="large"></ion-icon>
+              </button>
+            </ion-col>
+            <ion-col>
+              <ion-title style="padding-top: 2%;">Detalle del trabajo</ion-title>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        </ion-buttons> -->
+        <ion-toolbar>
+          <ion-title>Detalle del trabajo</ion-title>
+          <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+              <ion-icon  name="chevron-back-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+      </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <form name="frmTrabajo" id="frmTrabajo"  #ftrabajo="ngForm" lines="none">
+    <ion-item lines="none">
+      <ion-grid fixed class="ion-text-center grptitle" >
+        <ion-row >
+          <ion-col>
+            <div>Trabajo</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item>
+      <ion-label style="font-size: 1em;font-weight: bold;color: rgb(135, 135, 179)" >Codigo artículo:</ion-label>
+      <ion-input  
+        [(ngModel)]="trabajoModificado.codigoArticulo" 
+        name="codigoArticulo" 
+        type="text" required></ion-input>
+      <ion-icon name="search" (click)="buscarCodigo()"></ion-icon>
+  </ion-item>
+    <ion-item>
+        <ion-label style="font-size: 1em;font-weight: bold;color: rgb(135, 135, 179)">Artículo:</ion-label>
+        <ion-input  
+          [(ngModel)]="trabajoModificado.articulo" 
+          name="articulo" 
+          type="text" 
+          required></ion-input>
+          <ion-icon name="search" (click)="onChangeArticulo()"></ion-icon>
+    </ion-item>
+    <ion-list *ngIf="showArticulos">
+      <ion-item  style="font-size: 0.8em;" *ngFor="let articulo of articulos" (click)="selectArticulo(articulo)">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="3">
+              {{articulo.codigoReparacion}}
+            </ion-col>
+            <ion-col size="6">
+              {{articulo.nombre}}
+            </ion-col>
+            <ion-col size="3">
+              {{articulo.precioUnitario}}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-icon name="checkmark-circle-outline" item-end></ion-icon>
+      </ion-item>
+    </ion-list>
+    <ion-list *ngIf="!encontrado">
+      <ion-item style="font-size: 1em; font-weight: bold;">
+         Artículo no encontrado
+         <ion-icon name="close-circle" item-end></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <ion-item>
+      <ion-label position="stacked">Concepto:</ion-label>
+      <ion-textarea 
+        maxlength ="500" 
+        autoGrow="true"
+        [(ngModel)]="trabajoModificado.descripcion"
+        name="descripcion_averia"
+        type="text" required
+        disabled="{{isDisabled}}">
+    </ion-textarea>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label>Tipos profesionales:</ion-label>
+      <ion-select  id="cmbTiposProfesionales" interface="action-sheet"
+      [(ngModel)]="trabajoModificado.tipoProfesionalId" [ngModelOptions]="{standalone: true}"
+      value="{{trabajoModificado.tipoProfesionalId}}"
+      okText="Aceptar" 
+      cancelText="Cancelar">
+      <ion-select-option 
+          *ngFor = "let tipoProfesional of tiposProfesionales" 
+          value={{tipoProfesional.tipoProfesionalId}}>
+          {{tipoProfesional.nombre}}
+      </ion-select-option>
+    </ion-select>
+    </ion-item> -->
+    <ion-item *ngIf="manoObra">
+      <ion-label position="stacked">Unidades:</ion-label>
+      <ion-input  
+        [(ngModel)]="trabajoModificado.unidades" 
+        [ngModelOptions]="{standalone: false}"
+        name="unidades" 
+        type="number"
+        disabled="{{isDisabled}}"
+        (ionChange)="calculaImportes()" required>
+      </ion-input>
+    </ion-item>
+    <ion-item *ngIf="!manoObra">
+      <ion-label position="stacked">Unidades:</ion-label>
+      <ion-input  
+        [(ngModel)]="trabajoModificado.unidades" 
+        [ngModelOptions]="{standalone: false}"
+        name="unidades" 
+        type="number"
+        (ionChange)="calculaImportes()" required>
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label style="text-decoration: underline;">
+        Importes del profesional
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Precio unitario:</ion-label>
+      <ion-input  
+        [(ngModel)]="trabajoModificado.precioProveedor" 
+        [ngModelOptions]="{standalone: false}" 
+        name="precioProveedor" 
+        disabled="{{isDisabled}}"
+        type="number" 
+        (ionChange)="calculaImportes()" required>
+      </ion-input>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label>IVA:</ion-label>
+      <ion-select  id="cmbTiposiva" interface="action-sheet"
+        [(ngModel)]="trabajoModificado.procentajeIvaProveedor" [ngModelOptions]="{standalone: true}"
+        (ngModelChange)="calculaImportes()"
+        value="{{trabajoModificado.procentajeIvaProveedor}}"
+        disabled="{{isDisabled}}"
+        okText="Aceptar" 
+        cancelText="Cancelar">
+        <ion-select-option 
+          *ngFor = "let tipoIva of tiposIva" 
+          value={{tipoIva.porcentaje}}>
+          {{tipoIva.nombre}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item> -->
+    <ion-item>
+      <ion-label   position="stacked" >Precio sin IVA:</ion-label>
+      <ion-input  
+        [(ngModel)]="trabajoModificado.importeProveedor"  
+        [ngModelOptions]="{standalone: true}" 
+        name="importeProveedor" 
+        type="number" 
+        disabled>
+      </ion-input>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label   stacked>Total IVA:</ion-label>
+      <ion-input  [(ngModel)]="trabajoModificado.ivaProveedor"  [ngModelOptions]="{standalone: true}" name="ivaProveedor" type="number" disabled></ion-input>
+    </ion-item> -->
+    <!-- <ion-item>
+      <ion-label  position="stacked"  stacked>Total con IVA:</ion-label>
+      <ion-input  [(ngModel)]="trabajoModificado.importeProveedorIva"  [ngModelOptions]="{standalone: true}" name="importeProveedorIva" type="number" disabled></ion-input>
+    </ion-item> -->
+    <!-- <ion-item>
+      <ion-label   stacked>Contado:</ion-label>
+      <ion-input  [(ngModel)]="trabajoModificado.aCuentaProveedor"  [ngModelOptions]="{standalone: true}" name="aCuentaProveedor" type="number"></ion-input>
+    </ion-item> -->
+    <ion-item>
+      <ion-label position="stacked" >Descripción:</ion-label>
+      <ion-textarea 
+        maxlength ="500" 
+        autoGrow="true"
+        [(ngModel)]="trabajoModificado.descripcion"
+        name="observaciones"
+        type="text">
+    </ion-textarea>
+    </ion-item> 
+    <div *ngIf="parte.formaPagoClienteId == 6 || parte.formaPagoClienteId == 18 || parte.formaPagoClienteId == 21">
+      <ion-item>
+        <ion-label style="text-decoration: underline;">
+          Importes del cliente
+        </ion-label>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked"  stacked>Precio unitario:</ion-label>
+        <ion-input  
+          [(ngModel)]="trabajoModificado.precioCliente" 
+          [ngModelOptions]="{standalone: false}" 
+          name="precioCliente" 
+          type="number"
+          disabled>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Precio sin IVA:</ion-label>
+        <ion-input  
+          [(ngModel)]="trabajoModificado.importeCliente" 
+          [ngModelOptions]="{standalone: false}" 
+          name="importeCliente" 
+          type="number" 
+          disabled>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Total IVA:</ion-label>
+        <ion-input  
+          [(ngModel)]="trabajoModificado.totalClienteIva"  
+          [ngModelOptions]="{standalone: false}" 
+          name="ivaCliente" 
+          type="number" 
+          disabled>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label  position="stacked">Total con IVA:</ion-label>
+        <ion-input  
+          [(ngModel)]="trabajoModificado.importeClienteIva"  
+          [ngModelOptions]="{standalone: false}" 
+          name="importeClienteIva" 
+          type="number" 
+          disabled>
+        </ion-input>
+      </ion-item>
+    </div>
+    <ion-item *ngIf="manoObra" style="display: flex; align-items: center;">
+      <ion-label position="stacked">Hora entrada:</ion-label>
+      <ion-input
+          [value]="horaEntradaFormat"
+          id="fechaFormat"
+          (click)="showDatepicker()"
+          placeholder="Selecciona una hora">
+        </ion-input>
+        <ion-icon 
+          name="calendar" 
+          slot="end" 
+          (click)="showDatepicker()" 
+          style="font-size: 20px; cursor: pointer;">
+        </ion-icon>    
+    </ion-item>
+    <ion-item  *ngIf="mostrarDatetime">
+      <ion-datetime  
+      displayFormat="H:mm"
+      cancelText="Cancelar" 
+      doneText="Hecho" 
+      [(ngModel)]="trabajoModificado.horaEntrada"  
+      [ngModelOptions]="{standalone: false}"
+      name="horaEntrada"
+      (ionChange)="formatEntradaSalida($event)"
+      presentation="time"
+      *ngIf="mostrarDatetime"
+      >
+    </ion-datetime>
+    </ion-item>
+    <ion-item *ngIf="manoObra" style="display: flex; align-items: center;">
+      <ion-label position="stacked">Hora salida:</ion-label>
+      <ion-input
+          [value]="horaSalidaFormat"
+          id="fechaFormat2"
+          (click)="showDatepicker2()"
+          placeholder="Selecciona una hora">
+        </ion-input>
+        <ion-icon 
+        name="calendar" 
+        slot="end" 
+        (click)="showDatepicker2()" 
+        style="font-size: 20px; cursor: pointer;">
+      </ion-icon>    
+    </ion-item>
+    <ion-item  *ngIf="mostrarDatetime2">
+      <ion-datetime  
+      displayFormat="H:mm"
+      cancelText="Cancelar" 
+      doneText="Hecho" 
+      [(ngModel)]="trabajoModificado.horaSalida"  
+      [ngModelOptions]="{standalone: false}"
+      name="horaSalida"
+      (ionChange)="formatEntradaSalida($event)"
+      presentation="time"
+      *ngIf="mostrarDatetime2"
+      >
+    </ion-datetime>
+    </ion-item>
+  </form>
+  </ion-list>
+</ion-content>
+  <ion-toolbar>
+    <ion-item  lines="none">
+      <ion-grid >
+        <ion-col *ngIf="parte && parte.confirmado ==1 && (parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6 && parte.estadoParteProfesionalId != 8)">
+          <ion-button  size="small" (click)="submit()"><ion-icon name="checkbox"></ion-icon></ion-button>
+        </ion-col>
+        <ion-row>
+        </ion-row>   
+      </ion-grid>
+    </ion-item>
+  </ion-toolbar>
+<app-footer></app-footer>

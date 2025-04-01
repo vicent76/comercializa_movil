@@ -1,0 +1,126 @@
+<app-cabecera></app-cabecera>
+<ion-header>
+      <!-- <ion-buttons end>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="1">
+              <button ion-button icon-only (click)="dismiss()">
+                <ion-icon name="arrow-back" size="large"></ion-icon>
+              </button>
+            </ion-col>
+            <ion-col>
+              <ion-title style="padding-top: 2%;">Busqueda de partes</ion-title>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        </ion-buttons> -->
+        <ion-toolbar>
+          <ion-title>Busqueda de partes</ion-title>
+          <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
+              <ion-icon  name="chevron-back-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+      </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-fab vertical="bottom" horizontal="end">
+    <ion-fab-button title="Opciones"><ion-icon name="apps"></ion-icon></ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button ion-fab  color="success" (click)="filtrarPartes()" title="Filtrar Partes"><ion-icon name="checkbox"></ion-icon></ion-fab-button>
+      <ion-fab-button ion-fab  color="primary" (click)="borrarFiltros()"  title="Borrar Filtros"><ion-icon name="trash-outline"></ion-icon></ion-fab-button>
+      <ion-fab-button ion-fab  color="danger" (click)="dismiss()"  title="Salir"><ion-icon name="close"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  <ion-list lines="none">
+    <form name="frmFitroParte"  lines="none">
+      <ion-item lines="none">
+        <ion-grid fixed class="ion-text-center grptitle" >
+          <ion-row >
+            <ion-col>
+              <div>Filtro</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item  style="display: flex; align-items: center;">
+        <ion-label position="stacked">Fecha solicitud:</ion-label>
+        <ion-input
+          [value]="fechaFormateada"
+          id="fechaFormat"
+          (click)="showDatepicker()"
+          placeholder="Selecciona una fecha">
+          <ion-icon 
+          name="calendar" 
+          slot="end" 
+          (click)="showDatepicker()" 
+          style="font-size: 20px; cursor: pointer;">
+        </ion-icon>    
+        </ion-input>
+      </ion-item>
+      <ion-item   *ngIf="mostrarDatetime">
+        <ion-datetime 
+          displayFormat="DD/MM/YYYY" 
+          pickerFormat="DD/MM/YYYY" 
+          cancelText="Cancelar" 
+          doneText="Hecho" 
+          (ionChange)="onDateChange($event)"
+          name="fecha"
+          id="fecha"
+          [(ngModel)]="busqueda.fecha"  
+          [ngModelOptions]="{standalone: false}"
+         
+          presentation="date"
+          [preferWheel]="true"
+          locale="es-ES"
+          >
+        </ion-datetime>
+      </ion-item>
+      <ion-item style="display: flex; align-items: center;">
+        <ion-label position="stacked">Hasta fecha solicitud:</ion-label>
+        <ion-input
+          [value]="fechaFormateada2"
+          id="fechaFormat2"
+          (click)="showDatepicker2()"
+          placeholder="Selecciona una fecha">
+        </ion-input>
+        <ion-icon 
+          name="calendar" 
+          slot="end" 
+          (click)="showDatepicker2()" 
+          style="font-size: 20px; cursor: pointer;">
+        </ion-icon>    
+      </ion-item>
+      <ion-item  *ngIf="mostrarDatetime2">
+        <ion-datetime 
+          displayFormat="DD/MM/YYYY" 
+          pickerFormat="DD/MM/YYYY" 
+          cancelText="Cancelar" 
+          doneText="Hecho" 
+          (ionChange)="onDateChange($event)"
+          name="hFecha"
+          id="hFecha"
+         
+          [(ngModel)]="busqueda.hFecha"  
+          [ngModelOptions]="{standalone: false}"
+          presentation="date"
+          [preferWheel]="true"
+          locale="es-ES"
+          >
+        </ion-datetime>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label   position="stacked" color="cabecera" stacked>Dirección de trabajo:</ion-label>
+        <ion-input  
+          [(ngModel)]="busqueda.direccionTrabajo" 
+          [ngModelOptions]="{standalone: false}"
+          name="direccionTrabajo" 
+          type="text"
+        ></ion-input>
+      </ion-item>
+    </form>
+  </ion-list>
+
+</ion-content>
+<app-footer></app-footer>

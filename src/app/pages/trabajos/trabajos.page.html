@@ -1,0 +1,71 @@
+<app-header titulo="Trabajos"></app-header>
+<app-cabecera></app-cabecera>
+
+
+<ion-content>
+  <ion-list *ngIf="trabajos.length > 0 && parte.confirmado ==1" style=" margin: 0px 10px 0px 10px">
+      <ion-item-sliding no-wrap lines="none" *ngFor="let trabajo of trabajos">
+        <div (click)="editarTrabajo(trabajo)">
+          <ion-item>
+              <ion-grid>
+                  <ion-row>
+                      <ion-col size="10">
+                        
+                            <strong>Código:</strong> {{trabajo.codigoArticulo}} 
+                            <br><strong>Artículo:</strong> {{trabajo.nombreArticulo}}
+                            <br><strong>Unidades:</strong> {{trabajo.unidades}}
+                      </ion-col>
+                      <ion-col size="2" style="padding-top: 10%;">
+                        <ion-icon name="log-in" size="large" item-end></ion-icon>
+                      </ion-col>
+                  </ion-row>
+              </ion-grid>
+          </ion-item>
+          </div>
+          <ion-item-options *ngIf="trabajos.length > 0 && parte.confirmado ==1 && (parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6 && parte.estadoParteProfesionalId != 8)">
+              <button color="light" class="grptitle" ion-button outline item-end round icon-left (click)="editarTrabajo(trabajo)">
+                  <ion-icon name="create"></ion-icon> 
+                  Editar
+                </button>
+                <button color="danger" ion-button outline item-end round icon-left  (click)="borrarTrabajo(trabajo)">
+                  <ion-icon name="trash"></ion-icon> 
+                  Borrar
+              </button>
+          </ion-item-options>
+      </ion-item-sliding>
+  </ion-list>
+  <ion-item *ngIf="parte.formaPagoClienteId == 6 || parte.formaPagoClienteId == 18 || parte.formaPagoClienteId == 21">
+    <ion-grid *ngIf="trabajos.length > 0 && parte.confirmado ==1" style=" margin: 0px 10px 0px 10px; border: 1px solid grey">
+      <ion-label color="primary">Totales del cliente</ion-label>
+      <ion-row style="border: black 1px solid;">
+          <ion-col>
+            <strong>Base</strong>
+          </ion-col>
+          <ion-col>
+            <strong>IVA</strong>
+          </ion-col>
+          <ion-col>
+            <strong>Total</strong>
+          </ion-col>
+        </ion-row>
+          <ion-row style="border: black 1px solid;" class="color">
+              <ion-col>
+                {{importeClienteTotal}} € 
+              </ion-col>
+              <ion-col>
+                {{clienteIvaTotal}} €
+              </ion-col>
+              <ion-col>
+                {{importeClienteIvaTotal}} €
+              </ion-col>
+          </ion-row>
+  </ion-grid>
+  </ion-item>
+  <ion-fab *ngIf="parte && parte.confirmado ==1 && (parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6 && parte.estadoParteProfesionalId != 8)" vertical="bottom" horizontal="end" slot="fixed" id="crearTrabajo">
+      <ion-fab-button ion-fab  (click)="crearTrabajo()"  title="Crear trabajo"><ion-icon name="add-circle-outline"></ion-icon></ion-fab-button>
+
+  </ion-fab>
+
+</ion-content>
+
+<app-footer></app-footer>

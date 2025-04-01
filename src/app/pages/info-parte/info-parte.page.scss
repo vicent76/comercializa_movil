@@ -1,0 +1,23 @@
+.myGreen {
+    font-size: 0.9em;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.header-estile {
+    background-color: green!important;
+    border: 1px solid !important;
+    color: blanchedalmond !important;
+}
+
+
+.item-background-color{
+    --ion-item-background: transparent !important;
+}
+
+
+ion-col ion-label {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+

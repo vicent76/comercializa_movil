@@ -1,0 +1,11 @@
+<app-header titulo="Fotos"></app-header>
+
+<ion-content>
+  <app-cabecera></app-cabecera>
+  <ion-fab *ngIf="parte.estadoParteProfesionalId != 2" vertical="bottom" horizontal="end" slot="fixed" id="modalFiltro">
+    <ion-fab-button ion-fab  (click)="takePicture()"><ion-icon name="images-outline"></ion-icon></ion-fab-button>
+  </ion-fab>
+  <img *ngIf="image" [src]="image" alt="image">
+</ion-content>
+
+<app-footer></app-footer>

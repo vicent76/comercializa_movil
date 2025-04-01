@@ -1,0 +1,49 @@
+<app-header titulo="Login"></app-header>
+
+<ion-content>
+    <form (ngSubmit)="loginUsuPush(fLogin)" #fLogin="ngForm">
+        <ion-grid fixed class="ion-text-center">
+            <ion-row>
+              <ion-col>
+                <img class="imagen-icono" src="/assets/imgs/login.png">
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                  <ion-list>
+                    <ion-item>
+                      <ion-label position="stacked" class="label-grande">Usuario</ion-label>
+                      <ion-input name="codigo"
+                                  type="text"
+                                  [(ngModel)]="loginUser.usuario"
+                                  required></ion-input>
+                    </ion-item>
+                  </ion-list>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-list>
+                      <ion-item>
+                        <ion-label position="stacked" class="label-grande">Contraseña</ion-label>
+                        <ion-input name="password"
+                                    type="password"
+                                    [(ngModel)]="loginUser.password"
+                                    required></ion-input>
+                      </ion-item>
+                    </ion-list>
+                </ion-col>
+              </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-button type="submit"
+                            shape="round">
+                  Acceder
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+    </form>
+</ion-content>
+
+<app-footer></app-footer>

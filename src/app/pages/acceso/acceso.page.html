@@ -1,0 +1,36 @@
+<app-header titulo="Acceso"></app-header>
+
+<ion-content>
+    <form (ngSubmit)="buscarEmpresa(fEmpresa)" #fEmpresa="ngForm">
+        <ion-grid fixed class="ion-text-center">
+            <ion-row>
+              <ion-col>
+                <img class="imagen-icono" src="/assets/imgs/logistics.png">
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                  <ion-list>
+                    <ion-item>
+                      <ion-label position="stacked" class="label-grande">Código de empresa</ion-label>
+                      <ion-input name="codigo"
+                                  type="text"
+                                  [(ngModel)]="codigo"
+                                  required></ion-input>
+                    </ion-item>
+                  </ion-list>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-button type="submit"
+                            shape="round">
+                  Buscar empresa
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+    </form>
+</ion-content>
+
+<app-footer></app-footer>

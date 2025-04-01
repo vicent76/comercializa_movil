@@ -1,0 +1,50 @@
+<app-header titulo="Partes"></app-header>
+<app-cabecera></app-cabecera>
+<ion-toolbar>
+  <ion-item  class="myGreen">
+    <ion-label>Mostrar tambien partes cerrados</ion-label>
+    <div *ngIf="estado == false">
+      <ion-checkbox color="light" (ionChange)="selected($event)"></ion-checkbox>
+    </div>
+    <div *ngIf="estado == true">
+      <ion-checkbox color="light" (ionChange)="selected($event)" checked></ion-checkbox>
+    </div>
+  </ion-item>
+</ion-toolbar>
+<ion-content>
+  <div *ngIf="partes">
+    <ion-list *ngIf="partes.length > 0" style=" margin: 0px 10px 0px 10px">
+      <div *ngFor="let parte of partes" [ngClass]="{'color': parte.confirmado == 1}">
+        <div [ngClass]="{'color2': parte.estadoParteProfesionalId == 2}">
+          <div  [ngClass]="{'Selected-color': parte.parteId == parteSelect}">
+            <div class="myGreen" (click)="editarParte(parte)">
+              <ion-item lines="none" class="item-background-color">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="10">
+                      <strong>Número parte:</strong> {{parte.numParte}} 
+                      <br><strong>Cliente:</strong> {{parte.cliNombre}}
+                      <br> <strong>Fecha solicitud:</strong> {{parte.fechaSolicitudFormat}}
+                      <!-- <br><strong>Fecha prevista:</strong> {{parte.fechaPrevistaFormat}} -->
+                    </ion-col>
+                    <ion-col size="2" style="padding-top: 2%;">
+                      <ion-icon name="log-in" size="large" item-end></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </div>
+          </div>  
+         
+        </div>
+      </div>
+    </ion-list>
+  </div>
+    
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed" id="modalFiltro">
+        <ion-fab-button ion-fab  (click)="openModalFiltro()" title="Buscar"><ion-icon name="search-outline"></ion-icon></ion-fab-button>
+    </ion-fab>
+</ion-content>
+
+<app-footer></app-footer>
+

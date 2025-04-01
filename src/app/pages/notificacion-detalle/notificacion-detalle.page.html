@@ -1,0 +1,50 @@
+<app-header titulo="Notificación"></app-header>
+
+<ion-content>
+  <app-cabecera></app-cabecera>
+  <ion-list>
+    <ion-item>
+      <ion-label><b>Datos de la notificación</b></ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row *ngIf="mensaje.urgente == 1">
+          <ion-col>
+            <ion-label>{{mensaje.urgenteText}}</ion-label><br>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="mensaje.presupuesto == 1">
+          <ion-col>
+            <ion-label>{{mensaje.presupuestoText}}</ion-label><br>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+                <ion-label>Fecha: </ion-label> {{mensaje.fechaFormat}}<br>
+                <ion-label>Asunto: </ion-label> {{mensaje.asunto}}<br>
+                <ion-label>Mensaje: </ion-label><br>
+              <div class="justificar" [innerHTML]="mensaje.texto">
+              </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <form  (ngSubmit)="salir()">
+            <ion-button icon-only type="submit" title="Salir">
+              <ion-icon name="checkbox"></ion-icon>
+            </ion-button>
+          </form>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+
+<app-footer></app-footer>

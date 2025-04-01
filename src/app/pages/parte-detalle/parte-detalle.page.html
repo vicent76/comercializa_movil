@@ -1,0 +1,201 @@
+<app-header titulo="Parte detalle"></app-header>
+<app-cabecera></app-cabecera>
+
+<ion-content padding>
+  <ion-list>
+    <form name="frmParte"  #fparte="ngForm" lines="none">
+      
+        <ion-item lines="none" class="grptitle">
+          <ion-grid fixed class="ion-text-center">
+            <ion-row class="grptitle">
+              <ion-col>
+                <div>Parte</div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item >
+            <ion-label position="stacked">Número:</ion-label>
+            <ion-input  [(ngModel)]="parteModificado.numParte"  
+            [ngModelOptions]="{standalone: false}" 
+            name="numParte"
+            disabled></ion-input>
+        </ion-item>
+        <!-- <ion-item >
+          <ion-label color="cabecera" position="stacked">Fecha Solicitud:</ion-label>
+          <ion-datetime  type="datetime"
+            displayFormat="DD/MM/YYYY" 
+            pickerFormat="DD/MM/YYYY" 
+            name="fecha_solicitud" 
+            cancelText="Cancelar" 
+            doneText="Hecho" 
+            [(ngModel)]="parteModificado.fecha_solicitud">
+          </ion-datetime>
+        </ion-item> -->
+        <!-- <ion-item >
+          <ion-label color="cabecera" position="stacked">Fecha Prevista:</ion-label>
+          <ion-datetime  displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" cancelText="Cancelar" doneText="Hecho" [(ngModel)]="parteModificado.fecha_prevista"  [ngModelOptions]="{standalone: false}"></ion-datetime>
+        </ion-item> -->
+        <ion-item>
+          <ion-label position="stacked">Fecha reparación:</ion-label>
+          <ion-input
+            [value]="fechaFormateada"
+            (click)="showDatepicker()"
+            readonly
+            >
+          </ion-input>
+          <ion-datetime
+            #datetime
+            displayFormat="DD/MM/YYYY"
+            pickerFormat="DD/MM/YYYY"
+            cancelText="Cancelar"
+            doneText="Hecho"
+            [(ngModel)]="parteModificado.fecha_reparacion"
+            [ngModelOptions]="{ standalone: true }"
+            (ionChange)="onDateChange($event)"
+            style="display: none;"
+          ></ion-datetime>
+        </ion-item>
+        
+        
+        <ion-item>
+          <ion-label position="stacked">Estado parte:</ion-label>
+          <ion-select
+            id="cmbEstadosParte"
+            [(ngModel)]="parteModificado.estadoParteProfesionalId"
+            [ngModelOptions]="{ standalone: false }" 
+            name="estadoParte"
+            okText="Aceptar"
+            cancelText="Cancelar"
+            [disabled]="true" 
+            required
+          >
+            <ion-select-option
+              *ngFor="let estado of estados"
+              [value]="estado.estadoParteProfesionalId"
+              [disabled]="estado.estadoParteProfesionalId === 2 || 
+                         estado.estadoParteProfesionalId === 6 ||
+                         estado.estadoParteProfesionalId === 7 ||
+                         estado.estadoParteProfesionalId === 8"
+            >
+              {{ estado.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label position="stacked">Garantía:</ion-label>
+          <ion-select 
+            id="cmbTiposGarantia" 
+            [(ngModel)]="parteModificado.tipoGarantiaId" 
+            [ngModelOptions]="{standalone: false}"
+            name="tipoGarantia"
+            okText="Aceptar" 
+            cancelText="Cancelar"
+            required>
+            <ion-select-option
+                *ngFor="let tipoGarantia of tiposGarantia" 
+                [value]="tipoGarantia.tipoGarantiaId">
+                {{tipoGarantia.nombre}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        
+        <!-- <ion-item >
+          <ion-label color="cabecera" position="stacked">Fecha Cierre:</ion-label>
+          <ion-datetime  displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" cancelText="Cancelar" doneText="Hecho" [(ngModel)]="parteModificado.fecha_cierre_profesional"   [ngModelOptions]="{standalone: false}"></ion-datetime>
+        </ion-item> -->
+        <!-- <ion-item>
+          <ion-label>Tipos profesionales:</ion-label>
+          <ion-select  id="cmbTiposProfesionales" interface="action-sheet"
+          [(ngModel)]="parteModificado.tipoProfesionalId" [ngModelOptions]="{standalone: false}"
+          (ngModelChange)="companyFormSelected($event)"
+          value="{{parteModificado.tipoProfesionalId}}"
+          okText="Aceptar" 
+          cancelText="Cancelar">
+            <ion-select-option 
+              *ngFor = "let tipoProfesional of tiposProfesionales" 
+              value={{tipoProfesional.tipoProfesionalId}}>
+              {{tipoProfesional.nombre}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item> -->
+        <ion-item >
+          <ion-label position="stacked">Descripción avería:</ion-label>
+          <ion-textarea 
+            maxlength ="500"
+            autoGrow="true"
+            [(ngModel)]="parteModificado.descripcion_averia"
+            name="descripcion_averia"
+            type="text"
+            disabled>
+        </ion-textarea>
+        </ion-item>
+        <ion-item >
+          <ion-label position="stacked">Reparación realizada:</ion-label>
+          <ion-textarea 
+            maxlength ="500"
+            [(ngModel)]="parteModificado.trabajos_realizados"
+            [ngModelOptions]="{standalone: false}"
+            name="trabajos_realizados"
+            type="text"
+            autoGrow="true"
+            required>
+        </ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Observaciones:</ion-label>
+          <ion-textarea 
+            maxlength ="500" 
+            [(ngModel)]="parteModificado.observacionesDelProfesional"  
+            [ngModelOptions]="{standalone: false}"
+            name="observacionesDelProfesional"
+            type="text"
+            autoGrow="true">
+        </ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Trabajos pendientes:</ion-label>
+          <ion-textarea 
+            maxlength ="500" 
+            [(ngModel)]="parteModificado.trabajosPendientes"  
+            [ngModelOptions]="{standalone: false}"
+            name="trabajosPendientes"
+            type="text"
+            autoGrow="true">
+        </ion-textarea>
+        </ion-item>
+  </form>
+  </ion-list>
+</ion-content>
+
+  <ion-toolbar>
+    <ion-item lines="none">
+      <div style="display: flex; justify-content: flex-end; width: 100%;">
+        <div style="margin-left: 8px;">
+          <ion-button 
+            (click)="openFrmPresupuesto()"  
+            title="Abrir presupuesto">
+            <ion-icon name="cash-outline"></ion-icon>
+          </ion-button>
+        </div>
+        <div style="margin-left: 8px;">
+          <ion-button 
+            color="danger" 
+            (click)="cancelar()" 
+            title="Salir">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </div>
+        <div style="margin-left: 8px;" *ngIf="(confirmado == 1 && (parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6 && parte.estadoParteProfesionalId != 8))">
+          <ion-button 
+            (click)="submit()" 
+            title="Guardar">
+            <ion-icon name="checkbox"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </ion-item>
+    
+  </ion-toolbar>
+<app-footer></app-footer>

@@ -1,0 +1,100 @@
+<app-header titulo="Información parte"></app-header>
+<ion-content>
+  <app-cabecera></app-cabecera>
+  <ion-list>
+ 
+    <ion-item>
+      <ion-label><b>{{parteModificado.empresa}}</b></ion-label>
+    </ion-item>
+  
+  </ion-list>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title class="ion-text-wrap">
+              <b>Parte número {{parteModificado.numParte}}</b><br>
+              <b>{{parteModificado.cliNombre}}</b>
+            </ion-card-title>
+        </ion-card-header>
+        <ion-card-content >
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label>Dirección trabajo</ion-label> <br>{{parteModificado.direccionTrabajo}} <br>
+                {{parteModificado.poblacionTrabajo}} <br>
+                <ion-label>Fecha solicitud</ion-label> <br>{{parteModificado.fechaSolicitudFormat}}<br>
+                <ion-label>Forma de pago</ion-label> <br>{{parteModificado.formaPagoCliente}}<br>
+              </ion-col>
+            </ion-row>
+          
+            <ion-row>
+              <ion-col size="12">
+                <ion-label>Descripción avería</ion-label><br>
+                {{parteModificado.descripcion_averia}}
+              </ion-col>
+              <ion-col>
+                <ion-label>Observaciones al profesional</ion-label><br>
+                 {{parteModificado.observacionesProfesional}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+           
+        </ion-card-content>
+    </ion-card>
+    <ion-list *ngIf="localesAfectados" style=" margin: 0px 10px 0px 10px">
+      <div *ngFor="let local of localesAfectados">
+            <div class="myGreen">
+              <ion-item lines="none" class="item-background-color">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="10">
+                      <strong>Local:</strong> {{local.nombreLocal}} 
+                      <br><strong>Contacto:</strong> {{local.contacto}}
+                      <br> <strong>Telf. 1: </strong> <button id="call1" value="{{local.telefono1}}" (click)="call($event)">{{local.telefono1}}</button>
+                      <br> <strong>Telf. 2: </strong> <button id="call2" (click)="call($event)">{{local.telefono2}}</button>
+                      <br><strong>Correo:</strong> {{local.correo}}
+                      <br><strong>Observaciones:</strong> {{local.observaciones}}
+                    </ion-col>
+                    <ion-col size="2" style="padding-top: 10%;">
+                      <ion-icon name="checkmark-circle-outline" size="large" item-end></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </div>
+      </div>
+    </ion-list>
+
+   
+</ion-content>
+<ion-toolbar>
+  <div *ngIf="parteModificado.confirmado == 0">
+    <form  (ngSubmit)="aceptar()">
+      <ion-grid  fixed class="ion-text-center">
+          <ion-row>
+            <ion-col>
+              <ion-button shape="round" (click)="rechazar()" color="danger">RECHAZAR</ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button type="submit"
+                          shape="round">
+                ACEPTAR
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </div>
+    <div *ngIf="parteModificado.confirmado == 1">
+      <form  (ngSubmit)="aceptar()">
+        <ion-grid  fixed class="ion-text-center">
+            <ion-row>
+              <ion-col>
+                <ion-button shape="round" (click)="cancelar()" color="danger">CANCELAR</ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </form>
+      </div>
+</ion-toolbar>
+
+<app-footer></app-footer>

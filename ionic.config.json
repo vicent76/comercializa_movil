@@ -1,0 +1,7 @@
+{
+  "name": "comercializa_movil",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
