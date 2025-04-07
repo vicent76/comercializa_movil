@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ariadnasw.comercializa2" version="1.0.33" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ariadnasw.comercializa2" version="1.0.34" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Comercializa2</name>
     <description>Aplicación movil de proveedores de Comercializa.</description>
     <author email="vicent@myariadna.com" href="http://ariadnasw.com/">Ariadna Software SL</author>
