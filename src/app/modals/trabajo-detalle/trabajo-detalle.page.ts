@@ -94,7 +94,9 @@ export class TrabajoDetallePage implements OnInit {
     private uiService: UiService,
     private modalCtrl: ModalController,
     private usuarioService: UsuarioService,
-    ) { }
+    ) { 
+      
+    }
 
     async ngOnInit() {
     //var datos = await this.comercializaService.getTrabajo();
@@ -524,6 +526,66 @@ export class TrabajoDetallePage implements OnInit {
     this.tiempoTrabajo = null
  }
 }
+
+onHoraEntradaManual(event: any) {
+  let inputValue = event.detail.value;
+
+  // Si el input tiene al menos dos caracteres (dos dígitos de la hora), añadir los dos puntos.
+  if (inputValue.length === 2 && !inputValue.includes(':')) {
+    inputValue = inputValue + ':';  // Añadimos los dos puntos
+    this.horaEntradaFormat= inputValue;
+  }
+
+  // Ahora validamos si el formato es válido (HH:mm)
+  const regex = /^([01]?[0-9]|2[0-3]):([0-5][0-9])$/;
+
+  if (regex.test(inputValue)) {
+    const [horas, minutos] = inputValue.split(':').map(Number);
+
+    const fechaActual = new Date();
+    fechaActual.setHours(horas, minutos, 0, 0);
+
+    // Usamos formato local sin zona horaria
+    const fechaLocalString = moment(fechaActual).format('YYYY-MM-DDTHH:mm');
+
+    // Asignamos el valor al modelo
+    this.trabajoModificado.horaEntrada = fechaLocalString;
+    this.horaEntradaFormat = inputValue;
+
+    // Llamamos al método de formateo
+    this.formatEntradaSalida({ detail: { value: fechaLocalString } });
+  }
+}
+
+
+
+onHoraSalidaManual(event: any) {
+  let inputValue = event.detail.value;
+
+  // Si el input tiene al menos dos caracteres (dos dígitos de la hora), añadir los dos puntos.
+  if (inputValue.length === 2 && !inputValue.includes(':')) {
+    inputValue = inputValue + ':';  // Añadimos los dos puntos
+    this.horaSalidaFormat= inputValue;
+  }
+
+  const regex = /^([01]?[0-9]|2[0-3]):([0-5][0-9])$/;
+
+  if (regex.test(inputValue)) {
+    const [horas, minutos] = inputValue.split(':').map(Number);
+
+    const fechaActual = new Date();
+    fechaActual.setHours(horas, minutos, 0, 0);
+
+    const fechaLocalString = moment(fechaActual).format('YYYY-MM-DDTHH:mm');
+
+    this.trabajoModificado.horaSalida = fechaLocalString;
+    this.horaSalidaFormat = inputValue;
+
+    this.formatEntradaSalida({ detail: { value: fechaLocalString } });
+  }
+}
+
+
 
   async guardarTrabajo(ftrabajo:NgForm) {
     //var fechaE, horaEntrada, fechaS, horaSalida, df;

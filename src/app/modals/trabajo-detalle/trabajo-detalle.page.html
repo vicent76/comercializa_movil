@@ -240,7 +240,7 @@
       <ion-input
           [value]="horaEntradaFormat"
           id="fechaFormat"
-          (click)="showDatepicker()"
+          (ionInput)="onHoraEntradaManual($event)"
           placeholder="Selecciona una hora">
         </ion-input>
         <ion-icon 
@@ -269,7 +269,7 @@
       <ion-input
           [value]="horaSalidaFormat"
           id="fechaFormat2"
-          (click)="showDatepicker2()"
+          (ionInput)="onHoraSalidaManual($event)"
           placeholder="Selecciona una hora">
         </ion-input>
         <ion-icon 
