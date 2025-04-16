@@ -89,7 +89,7 @@ export class FotosPage implements OnInit {
       const options: CameraOptions = {
         quality: 100,
         correctOrientation: false,
-        destinationType: this.camera.DestinationType.DATA_URL,
+        destinationType: this.camera.DestinationType.FILE_URI,
         encodingType: this.camera.EncodingType.PNG,
         mediaType: this.camera.MediaType.PICTURE,
         sourceType: this.camera.PictureSourceType.CAMERA
@@ -98,7 +98,7 @@ export class FotosPage implements OnInit {
       this.camera.getPicture(options)
       .then((imageData) => {
        // imageData is either a base64 encoded string or a file URI
-       // If it's base64 (DATA_URL):
+       // If it's base64 (FILE_URI):
        this.image = 'data:image/png;base64,' + imageData;
        this.save();
       }, 
@@ -110,50 +110,53 @@ export class FotosPage implements OnInit {
       console.log(error);
     }
   }
-
   async save() {
-    const file = this.image
-
+    const file = this.image;
+  
     var block = file.split(";");
     var contentType = block[0].split(":")[1];
     var realData = block[1].split(",")[1];
+  
+    // 🧼 Aquí limpias la base64 antes de convertirla a blob
+    realData = realData.replace(/\r?\n|\r/g, "");
+  
     var blob = this.b64toBlob(realData, contentType, null);
-
-    var name = this.parte.numParte + "_ID_" + this.fotoId + "_imagen.png"
-
-   
-    var newFile = new File([blob], name, {type: "image/png"});
-    
-    var fileKey =  name
+  
+    var name = this.parte.numParte + "_ID_" + this.fotoId + "_imagen.png";
+  
+    var newFile = new File([blob], name, { type: "image/png" });
+  
+    var fileKey = name;
     var params = {
-        Bucket: this.param.bucket,
-        Key: fileKey,
-        IdentityPoolId: this.param.identity_pool,
-        Body: newFile,
-        ACL: "public-read"
-    }
-    // Use S3 ManagedUpload class as it supports multipart uploads
+      Bucket: this.param.bucket,
+      Key: fileKey,
+      IdentityPoolId: this.param.identity_pool,
+      Body: newFile,
+      ACL: "public-read"
+    };
+  
     var upload = new AWS.S3.ManagedUpload({
-        params: params
+      params: params
     });
+  
     var promise = upload.promise();
-     promise
-    .then (
-        data => {
-          var datos = {
-            parteFotos: {
-              parteFotoId: 0,
-              parteId: this.parte.parteId,
-              src: data.Location
-            }
+    promise.then(
+      data => {
+        var datos = {
+          parteFotos: {
+            parteFotoId: 0,
+            parteId: this.parte.parteId,
+            src: data.Location
           }
-          this.creaParteFotos(datos); 
-        },
-        err =>{
-          this.uiService.controlDeError(err);
-        }
+        };
+        this.creaParteFotos(datos);
+      },
+      err => {
+        this.uiService.controlDeError(err);
+      }
     );
-}
+  }
+  
 
 async creaParteFotos(datos:any) {
   try {

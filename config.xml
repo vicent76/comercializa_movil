@@ -23,6 +23,7 @@
     <preference name="loadUrlTimeoutValue" value="700000" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <preference name="WKWebViewOnly" value="true" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <platform name="android">
         <hook src="hooks/copy_android_notification_icons.js" type="after_prepare" />
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
@@ -84,17 +85,14 @@
                 </dict>
             </array>
         </config-file>
-        <config-file parent="NSCameraUsageDescription" platform="ios" target="*-Info.plist">
-            <string>El uso de la cámara es con el fin de poder adjuntar fotos a los partes</string>
-        </config-file>
-        <config-file parent="NSLocationWhenInUseUsageDescription" platform="ios" target="*-Info.plist">
-            <string>Se usa la localización para ubicar la reparación</string>
-        </config-file>
+        <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
+            <string>Necesitamos acceder a la cámara para tomar fotos</string>
+        </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
-            <string>need photo library access to get pictures from there</string>
+            <string>Necesitamos acceder a la galería para seleccionar imágenes</string>
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryAddUsageDescription">
-            <string>need photo library access to save pictures there</string>
+            <string>Necesitamos guardar imágenes en tu galería</string>
         </edit-config>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />

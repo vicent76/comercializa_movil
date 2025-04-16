@@ -6,6 +6,7 @@ import { ModalFotoPage } from '../../modals/modal-foto/modal-foto.page';
 import { ParametrosService } from 'src/app/services/parametros.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 
 
 
@@ -40,6 +41,7 @@ export class GaleriaPage implements OnInit {
     private modalCtrl: ModalController,
     private empresaService: EmpresaService,
     private alertController: AlertController,
+    private file: File,
   ) { }
 
   ngOnInit() {
@@ -103,7 +105,7 @@ export class GaleriaPage implements OnInit {
           text: 'Reintentar',
           handler: () => { 
             alert.dismiss();
-            this.saveAPI(null);
+            //this.saveAPI(null);
           }
         }
             
@@ -139,41 +141,55 @@ export class GaleriaPage implements OnInit {
   }
 
   takePicture() {
-    try {
-      const options: CameraOptions = {
-        quality: 20,
-        destinationType: this.camera.DestinationType.DATA_URL,
-        mediaType: this.camera.MediaType.PICTURE,
-        encodingType: this.camera.EncodingType.PNG,
-        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-        targetWidth: 512,
-        targetHeight: 512
+    const options: CameraOptions = {
+      quality: 20,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      mediaType: this.camera.MediaType.PICTURE,
+      encodingType: this.camera.EncodingType.JPEG,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      targetWidth: 512,
+      targetHeight: 512
+    };
+  
+    this.camera.getPicture(options).then(async (imagePath) => {
+      try {
+        const fileEntry = await this.file.resolveLocalFilesystemUrl(imagePath) as any;
+       
+        fileEntry.file((file: Blob) => {
+          const reader = new FileReader();
+  
+          reader.onloadend = () => {
+            if (reader.result !== null) {
+              const blob = new Blob([reader.result], { type: file.type });
+              
+              const generatedName = this.parte.numParte + "_" + this.empresa.codigo + "_ID_" + this.fotoId + "_imagen.jpeg";
+              
+              this.saveAPI(generatedName, blob);
+            } else {
+              this.uiService.controlDeError("Error al leer el archivo: result es null");
+            }
+          };
+  
+          reader.readAsArrayBuffer(file); // importante usar ArrayBuffer para Blob
+        }, (err: any) => {
+          this.uiService.controlDeError(err);
+        });
+  
+      } catch (err) {
+        this.uiService.controlDeError(err);
       }
-      this.camera.getPicture(options)
-      .then((imageData) => {
-        this.image = imageData;
-        this.saveAPI(this.image);
-        //this.uiService.controlDeError(tempImage);
-
-        //this.readImage(tempImage);
-       
-      }, 
-      (error) => {
-        this.uiService.controlDeError(error);  
-       
-      });
-    }catch(error) {
+    }, (error) => {
       this.uiService.controlDeError(error);
-    }
+    });
   }
-
+  
   catchPicture() {
     try {
       const options: CameraOptions = {
         quality: 5,
-        destinationType: this.camera.DestinationType.DATA_URL,
+        destinationType: this.camera.DestinationType.FILE_URI,
         mediaType: this.camera.MediaType.PICTURE,
-        encodingType: this.camera.EncodingType.PNG,
+        encodingType: this.camera.EncodingType.JPEG,
         sourceType: this.camera.PictureSourceType.CAMERA,
         targetWidth: 1024,
         targetHeight: 1024
@@ -182,7 +198,7 @@ export class GaleriaPage implements OnInit {
       this.camera.getPicture(options)
       .then((imageData) => {
         this.image = imageData;
-        this.saveAPI(this.image);
+        //this.saveAPI(this.image);
         //this.uiService.controlDeError(tempImage);
 
         //this.readImage(tempImage);
@@ -196,82 +212,37 @@ export class GaleriaPage implements OnInit {
       this.uiService.controlDeError(error);
     }
   }
-
-  async saveAPI(realData: any) {
-    var data = { b64: {
-      datos: null,
-            nombre: '',
-            parteId: 0,
-            numParte: 0
-    }};
-    var datos2 = {};
+  async saveAPI(nombre: string, imagenBlob: Blob) {
     this.cargando = true;
-    //const espera = this.uiService.iniciarEspera();
-    var name = this.parte.numParte + "_" + this.empresa.codigo + "_ID_" + this.fotoId + "_imagen.png";
+  
+    const formData = new FormData();
+    formData.append('file', imagenBlob, nombre);
+    formData.append('parteId', this.parte.parteId.toString());
+    formData.append('numParte', this.parte.numParte.toString());
+  
     try {
       await this.uiService.presentToast("Se está subiendo la imagen al servidor");
-      if(!realData) {//si estamos cargando una cooki de una carga que ha fallado
-        data = {
-          b64: {
-            datos: this.storeImagen,
-            nombre: this.antParte.nombre,
-            parteId: this.antParte.parteId,
-            numParte: this.antParte.numParte
-          }
+  
+      // Este método debe aceptar FormData en tu servicio y hacer la petición al backend
+      const datos = await this.comercializaService.decodeBlob(formData);
+  
+      const datos2 = {
+        parteFotos: {
+          parteFotoId: 0,
+          parteId: this.parte.parteId,
+          src: datos.Location
         }
-
-      } else {
-        data = {
-          b64: {
-            datos: realData,
-            nombre: name,
-            parteId: this.parte.pateId,
-            numParte: this.parte.numParte
-          }
-        }
-      }
-     
-      var datos = await this.comercializaService.decodeData(data);
-     
-      if(datos && realData) {
-        datos2 = {
-          parteFotos: {
-            parteFotoId: 0,
-            parteId: this.parte.parteId,
-            src: datos.Location
-          }
-        }
-        this.creaParteFotos(datos2);
-        //(await espera).dismiss();
-      } else {
-        datos2 = {
-          parteFotos: {
-            parteFotoId: 0,
-            parteId: this.antParte.parteId,
-            src: datos.Location
-          }
-        }
-        this.creaParteFotos(datos2);
-      }
-    }catch(err) {
-      var obj = {
-        nombre: name,
-        parteId: this.parte.parteId,
-        numParte: this.parte.numParte
       };
-      this.cargando = false;
+  
+      this.creaParteFotos(datos2);
+  
+    } catch (err) {
       this.uiService.controlDeError(err);
-      try{
-        await this.comercializaService.borrarImagenData();
-        await this.comercializaService.borrarAntParte();
-        await this.comercializaService.guardarImagenData(realData);
-        await this.comercializaService.guardarAntParte(obj)
-
-      }catch(e) {
-        this.uiService.controlDeError(e);
-      }
+    } finally {
+      this.cargando = false;
     }
   }
+  
   
 async finalizaEspera(espera: any) {
   (await espera).dismiss();

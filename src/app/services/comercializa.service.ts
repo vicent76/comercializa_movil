@@ -640,6 +640,12 @@ export class ComercializaService {
     })
 
   }
+
+  async decodeBlob(formData: FormData): Promise<any> {
+    const empresa = await this.empresaService.getEmpresa();
+    return this.http.post(`${empresa.url}/api/partes/decodifica/datos/del/parte/decode-blob`, formData).toPromise();
+  }
+  
  
 
   decodeFirma(data:any) {
@@ -1121,4 +1127,6 @@ export class ComercializaService {
     const antParte = await this.storage.get('comercializa-antParte');
     return antParte;
   }
+
+
 }
