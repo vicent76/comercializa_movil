@@ -641,9 +641,17 @@ export class ComercializaService {
 
   }
 
-  async decodeBlob(formData: FormData): Promise<any> {
-    const empresa = await this.empresaService.getEmpresa();
-    return this.http.post(`${empresa.url}/api/partes/decodifica/datos/del/parte/decode-blob`, formData).toPromise();
+  decodeBlob(formData: FormData) {
+    return new Promise(async (resolve, reject) => {
+      const empresa = await this.empresaService.getEmpresa();
+      this.http.post(`${empresa.url}/api/partes/decodifica/datos/del/parte/decode-blob`, formData)
+        .subscribe(async (resp: any) => {
+          resolve(resp);
+        },
+          err => {
+            reject(err);
+          })
+    })
   }
   
  

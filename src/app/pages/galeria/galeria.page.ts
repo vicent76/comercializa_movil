@@ -73,7 +73,7 @@ export class GaleriaPage implements OnInit {
         (await espera).dismiss(); 
         if(!enCarga) {
           if(this.storeImagen && this.antParte) {
-            this.intentarDescartar('La carga de la carga de una imagen del parte ' + this.antParte.numParte + ', ¿Desea volver a subirla?');
+            //this.intentarDescartar('La carga de la carga de una imagen del parte ' + this.antParte.numParte + ', ¿Desea volver a subirla?');
           }
         }
       }
@@ -184,33 +184,46 @@ export class GaleriaPage implements OnInit {
   }
   
   catchPicture() {
-    try {
-      const options: CameraOptions = {
-        quality: 5,
-        destinationType: this.camera.DestinationType.FILE_URI,
-        mediaType: this.camera.MediaType.PICTURE,
-        encodingType: this.camera.EncodingType.JPEG,
-        sourceType: this.camera.PictureSourceType.CAMERA,
-        targetWidth: 1024,
-        targetHeight: 1024
+    const options: CameraOptions = {
+      quality: 20,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      mediaType: this.camera.MediaType.PICTURE,
+      encodingType: this.camera.EncodingType.JPEG,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      targetWidth: 512,
+      targetHeight: 512
+    };
+  
+    this.camera.getPicture(options).then(async (imagePath) => {
+      try {
+        const fileEntry = await this.file.resolveLocalFilesystemUrl(imagePath) as any;
+       
+        fileEntry.file((file: Blob) => {
+          const reader = new FileReader();
+  
+          reader.onloadend = () => {
+            if (reader.result !== null) {
+              const blob = new Blob([reader.result], { type: file.type });
+              
+              const generatedName = this.parte.numParte + "_" + this.empresa.codigo + "_ID_" + this.fotoId + "_imagen.jpeg";
+              
+              this.saveAPI(generatedName, blob);
+            } else {
+              this.uiService.controlDeError("Error al leer el archivo: result es null");
+            }
+          };
+  
+          reader.readAsArrayBuffer(file); // importante usar ArrayBuffer para Blob
+        }, (err: any) => {
+          this.uiService.controlDeError(err);
+        });
+  
+      } catch (err) {
+        this.uiService.controlDeError(err);
       }
-      
-      this.camera.getPicture(options)
-      .then((imageData) => {
-        this.image = imageData;
-        //this.saveAPI(this.image);
-        //this.uiService.controlDeError(tempImage);
-
-        //this.readImage(tempImage);
-       
-      }, 
-      (error) => {
-        this.uiService.controlDeError(error);  
-       
-      });
-    }catch(error) {
+    }, (error) => {
       this.uiService.controlDeError(error);
-    }
+    });
   }
   async saveAPI(nombre: string, imagenBlob: Blob) {
     this.cargando = true;
@@ -224,7 +237,7 @@ export class GaleriaPage implements OnInit {
       await this.uiService.presentToast("Se está subiendo la imagen al servidor");
   
       // Este método debe aceptar FormData en tu servicio y hacer la petición al backend
-      const datos = await this.comercializaService.decodeBlob(formData);
+      const datos: any = await this.comercializaService.decodeBlob(formData);
   
       const datos2 = {
         parteFotos: {
@@ -254,9 +267,11 @@ async creaParteFotos(datos: object) {
     await this.comercializaService.borrarAntParte();
     await this.comercializaService.borrarImagenData();
     let f = await this.comercializaService.postParteFotos(datos);
+    
     this.fotos = await this.comercializaService.getParteFotos(this.parte.parteId);
     //(await espera).dismiss();
     if(this.fotos) {
+
       let n = this.fotos.length;
       this.fotoId = n + 1;
     } else {
