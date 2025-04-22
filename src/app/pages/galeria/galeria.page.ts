@@ -262,27 +262,32 @@ async finalizaEspera(espera: any) {
 }
 
 async creaParteFotos(datos: object) {
-  //const espera = this.uiService.iniciarEspera();
+  const espera = this.uiService.iniciarEspera();
   try {
     await this.comercializaService.borrarAntParte();
     await this.comercializaService.borrarImagenData();
     let f = await this.comercializaService.postParteFotos(datos);
-    
+    this.init(false)
     this.fotos = await this.comercializaService.getParteFotos(this.parte.parteId);
-    //(await espera).dismiss();
+    //this.uiService.controlDeError(this.fotos.length);
+   
     if(this.fotos) {
-
+      this.fotos = [...this.fotos]; // Esto fuerza el renderizado del *ngFor
+      //this.fotos.push(f);
       let n = this.fotos.length;
       this.fotoId = n + 1;
+      (await espera).dismiss(); 
+      this.uiService.aceptarCancelar('Foto subida correctamente')
     } else {
       this.fotoId = 1;
+      (await espera).dismiss(); 
+      this.uiService.aceptarCancelar('Foto subida correctamente')
     }
-    //this.fotos.push(f);
     this.cargando = false;
   }catch(error) {
     this.cargando = false;
     this.uiService.controlDeError(error);
-    //(await espera).dismiss();
+    (await espera).dismiss();
   }
 }
 

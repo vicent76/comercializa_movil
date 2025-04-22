@@ -53,13 +53,7 @@ export class UiService {
       header: 'ATENCIÓN',
       message,
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: data => {
-            return false;
-          }
-        },
+        
         {
           text: 'Aceptar',
           handler: data => { 
