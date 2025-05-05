@@ -21,6 +21,7 @@ import { Camera } from '@awesome-cordova-plugins/camera/ngx';
 import { WebView } from '@awesome-cordova-plugins/ionic-webview/ngx';
 import { registerLocaleData } from '@angular/common';
 import { File } from '@awesome-cordova-plugins/file/ngx';
+import { Clipboard } from '@awesome-cordova-plugins/clipboard/ngx';
 
 //import { FooterComponent } from './components/footer/footer.component';
 
@@ -49,7 +50,8 @@ registerLocaleData(es);
     CallNumber,
     Camera,
     WebView,
-    File
+    File,
+    Clipboard
   ],
   bootstrap: [AppComponent]
 })

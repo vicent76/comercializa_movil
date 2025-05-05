@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ComercializaService } from 'src/app/services/comercializa.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { UiService } from 'src/app/services/ui.service';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
+import { Clipboard } from '@awesome-cordova-plugins/clipboard/ngx';
 import * as moment from 'moment';
 
 
@@ -31,12 +32,14 @@ export class InfoPartePage implements OnInit {
   };
 
   constructor(
-    private comercializaService: ComercializaService,
-    private usuarioService: UsuarioService,
-    private navCtrl: NavController,
-    private uiService: UiService,
-    private route: ActivatedRoute,
-    private callNumber: CallNumber
+    public comercializaService: ComercializaService,
+    public usuarioService: UsuarioService,
+    public navCtrl: NavController,
+    public uiService: UiService,
+    public route: ActivatedRoute,
+    public callNumber: CallNumber,
+    public clipboard: Clipboard,
+    public plt: Platform
   ) { }
 
   async ngOnInit() {
@@ -171,7 +174,15 @@ export class InfoPartePage implements OnInit {
   call(event: any) {
     try {
       var telefono = event.currentTarget.outerText
-      this.callNumber.callNumber(telefono, true);
+      if (this.plt.is('ios')) {
+        this.clipboard.copy(telefono).then(() => {
+          this.uiService.presentToast('Número copiado al portapapeles: ' + telefono);
+        }).catch(err => {
+          console.error('Error al copiar:', err);
+        });
+      } else {
+        this.callNumber.callNumber(telefono, true);
+      }
     } catch(error) {
       console.log(error);
     }
