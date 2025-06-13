@@ -2,20 +2,41 @@
 
 <ion-content>
   <app-cabecera></app-cabecera>
-  <ion-fab *ngIf="parte.confirmado && parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6 && parte.estadoParteProfesionalId != 8 && !cargando" vertical="bottom" horizontal="end">
+
+  <!-- Contenedor para la vista previa de la cámara -->
+  <div *ngIf="cameraActive" id="cameraPreview"
+       style="width: 100%; height: 300px; position: relative; z-index: 1;">
+  </div>
+
+  
+<!-- Botón para capturar foto desde preview -->
+<ion-fab *ngIf="cameraActive" vertical="bottom" horizontal="center">
+  <ion-fab-button color="danger" (click)="catchPicture()">
+    <ion-icon name="radio-button-on-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+  <ion-fab *ngIf="parte.confirmado && parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6 && parte.estadoParteProfesionalId != 8 && !cargando"
+           vertical="bottom" horizontal="end">
     <ion-fab-button><ion-icon name="apps"></ion-icon></ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button ion-fab  color="tertiary" (click)="takePicture()"><ion-icon name="images-outline"></ion-icon></ion-fab-button>
-      <ion-fab-button ion-fab  color="success" (click)="catchPicture()"><ion-icon name="camera"></ion-icon></ion-fab-button>
+      <ion-fab-button color="tertiary" (click)="takePictureFromGallery()">
+        <ion-icon name="images-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="success" (click)="toggleCameraPreview()">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
+
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let foto of fotos">
-        <img class="galeria" src="{{foto.src}}" alt="" srcset="" (click)="openModalImagen(foto)">
+        <img class="galeria" [src]="foto.src" alt="" (click)="openModalImagen(foto)">
       </ion-col>
     </ion-row>
   </ion-grid>
 
 </ion-content>
+
 <app-footer></app-footer>

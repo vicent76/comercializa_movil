@@ -7,6 +7,8 @@ import { ParametrosService } from 'src/app/services/parametros.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
+import { CameraPreview } from '@awesome-cordova-plugins/camera-preview/ngx';
+
 
 
 
@@ -29,7 +31,8 @@ export class GaleriaPage implements OnInit {
   param: any = {};
   empresa: any = {};
   cargando: any = false;
-  antParte: any = {}
+  antParte: any = {};
+  cameraActive = false;
   
  
 
@@ -42,6 +45,7 @@ export class GaleriaPage implements OnInit {
     private empresaService: EmpresaService,
     private alertController: AlertController,
     private file: File,
+    private cameraPreview: CameraPreview
   ) { }
 
   ngOnInit() {
@@ -140,7 +144,7 @@ export class GaleriaPage implements OnInit {
     this.image = null;
   }
 
-  takePicture() {
+  takePictureFromGallery() {
     const options: CameraOptions = {
       quality: 20,
       destinationType: this.camera.DestinationType.FILE_URI,
@@ -184,46 +188,68 @@ export class GaleriaPage implements OnInit {
   }
   
   catchPicture() {
-    const options: CameraOptions = {
-      quality: 20,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      mediaType: this.camera.MediaType.PICTURE,
-      encodingType: this.camera.EncodingType.JPEG,
-      sourceType: this.camera.PictureSourceType.CAMERA,
-      targetWidth: 512,
-      targetHeight: 512
+    const options: any = {
+      width: 512,
+      height: 512,
+      quality: 70
     };
   
-    this.camera.getPicture(options).then(async (imagePath) => {
-      try {
-        const fileEntry = await this.file.resolveLocalFilesystemUrl(imagePath) as any;
-       
-        fileEntry.file((file: Blob) => {
-          const reader = new FileReader();
+    this.cameraPreview.takePicture(options).then(async (imageData) => {
+      const base64 = 'data:image/jpeg;base64,' + imageData;
+      const blob = this.base64ToBlob(base64);
+      const nombre = `${this.parte.numParte}_${this.empresa.codigo}_ID_${this.fotoId}_imagen.jpeg`;
   
-          reader.onloadend = () => {
-            if (reader.result !== null) {
-              const blob = new Blob([reader.result], { type: file.type });
-              
-              const generatedName = this.parte.numParte + "_" + this.empresa.codigo + "_ID_" + this.fotoId + "_imagen.jpeg";
-              
-              this.saveAPI(generatedName, blob);
-            } else {
-              this.uiService.controlDeError("Error al leer el archivo: result es null");
-            }
-          };
-  
-          reader.readAsArrayBuffer(file); // importante usar ArrayBuffer para Blob
-        }, (err: any) => {
-          this.uiService.controlDeError(err);
-        });
-  
-      } catch (err) {
-        this.uiService.controlDeError(err);
-      }
-    }, (error) => {
-      this.uiService.controlDeError(error);
+      this.saveAPI(nombre, blob);
+      this.stopCamera(); // opcional si quieres cerrar preview tras captura
+    }).catch(err => {
+      this.uiService.controlDeError(err);
     });
+  }
+  
+  base64ToBlob(base64: string): Blob {
+    const byteString = atob(base64.split(',')[1]);
+    const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+  
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+  
+    return new Blob([ab], { type: mimeString });
+  }
+  
+  async procesarImagen(imagePath: string) {
+    try {
+      const fileEntry = await this.file.resolveLocalFilesystemUrl(imagePath) as any;
+  
+      fileEntry.file((file: Blob) => {
+        const reader = new FileReader();
+  
+        reader.onloadend = () => {
+          if (reader.result !== null) {
+            const blob = new Blob([reader.result], { type: file.type });
+  
+            const generatedName = `${this.parte.numParte}_${this.empresa.codigo}_ID_${this.fotoId}_imagen.jpeg`;
+  
+            this.saveAPI(generatedName, blob);
+          } else {
+            this.uiService.controlDeError("Error al leer el archivo: result es null");
+          }
+        };
+  
+        // Diferir lectura para evitar bloquear el hilo
+        setTimeout(() => {
+          reader.readAsArrayBuffer(file);
+        }, 0);
+  
+      }, (err: any) => {
+        this.uiService.controlDeError(err);
+      });
+  
+    } catch (err) {
+      this.uiService.controlDeError(err);
+    }
   }
   async saveAPI(nombre: string, imagenBlob: Blob) {
     this.cargando = true;
@@ -291,4 +317,38 @@ async creaParteFotos(datos: object) {
   }
 }
 
+toggleCameraPreview() {
+  if (this.cameraActive) {
+    this.stopCamera();
+  } else {
+    this.startCamera();
+  }
+}
+
+startCamera() {
+  const options: any = {
+    x: 0,
+    y: 0,
+    width: window.screen.width,
+    height: 300,
+    camera: 'rear',
+    toBack: false,
+    previewDrag: false,
+    tapPhoto: false
+  };
+
+  this.cameraPreview.startCamera(options).then(() => {
+    this.cameraActive = true;
+  }).catch(err => {
+    this.uiService.controlDeError(err);
+  });
+}
+
+stopCamera() {
+  this.cameraPreview.stopCamera().then(() => {
+    this.cameraActive = false;
+  }).catch(err => {
+    this.uiService.controlDeError(err);
+  });
+}
 }

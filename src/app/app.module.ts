@@ -22,6 +22,8 @@ import { WebView } from '@awesome-cordova-plugins/ionic-webview/ngx';
 import { registerLocaleData } from '@angular/common';
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { Clipboard } from '@awesome-cordova-plugins/clipboard/ngx';
+import { CameraPreview } from '@awesome-cordova-plugins/camera-preview/ngx';
+
 
 //import { FooterComponent } from './components/footer/footer.component';
 
@@ -41,6 +43,7 @@ registerLocaleData(es);
     IonicStorageModule.forRoot()
   ],
   providers: [
+    CameraPreview,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
