@@ -42,12 +42,12 @@
           </ion-input>
         </ion-item>
         <ion-item>
-          <ion-label style="font-size: 1em;">No desea firmar el parte</ion-label>
+          <ion-label style="font-size: 1.2em;color: red;">No desea firmar el parte</ion-label>
           <div *ngIf="parteModificado.noFirma == false">
-            <ion-checkbox color="light" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+            <ion-checkbox  class="big-checkbox" color="danger" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}"></ion-checkbox>
           </div>
           <div *ngIf="parteModificado.noFirma == true">
-            <ion-checkbox color="light" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}" checked></ion-checkbox>
+            <ion-checkbox  class="big-checkbox" color="danger" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}" checked></ion-checkbox>
           </div>
         </ion-item>
       </div>
@@ -87,12 +87,12 @@
           </ion-input>
         </ion-item>
         <ion-item>
-          <ion-label style="font-size: 1em;">No desea firmar el parte</ion-label>
+          <ion-label style="font-size: 1.2em;color: red;">No desea firmar el parte</ion-label>
           <div *ngIf="parteModificado.noFirma == false">
-            <ion-checkbox color="light" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}" disabled></ion-checkbox>
+            <ion-checkbox class="big-checkbox"  color="danger" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}" disabled></ion-checkbox>
           </div>
           <div *ngIf="parteModificado.noFirma == true">
-            <ion-checkbox color="light" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}" disabled></ion-checkbox>
+            <ion-checkbox class="big-checkbox"  color="danger" [(ngModel)]="parteModificado.noFirma" [ngModelOptions]="{standalone: true}" disabled></ion-checkbox>
           </div>
         </ion-item>
       
@@ -109,15 +109,15 @@
     </form>
   </ion-list>
 </ion-content>
-  <ion-toolbar>
-    <ion-item  lines="none" *ngIf="!parte.firma && !parte.noFirma">
-      <ion-grid *ngIf="parte && parte.confirmado && parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6">
-        <ion-row>
+  <ion-toolbar style="height: 10%;">
+    <ion-item  style="height: 120%;" lines="none" *ngIf="!parte.firma && !parte.noFirma">
+      <ion-grid  style="height: 120%;" *ngIf="parte && parte.confirmado && parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6">
+        <ion-row style="height: 120%;">
           <ion-col size="9">
-            <ion-button float-right color="danger" (click)="clear()" title="Limpiar datos"><ion-icon name="arrow-undo-circle-outline"></ion-icon></ion-button>
+            <ion-button  class="big-button" float-right color="danger" (click)="clear()" title="Limpiar datos"><ion-icon size="large" name="arrow-undo-circle-outline"></ion-icon></ion-button>
           </ion-col>
           <ion-col >
-            <ion-button float-right color="tertiary"  (click)="save()" title="Guardar"><ion-icon name="checkbox"></ion-icon></ion-button>
+            <ion-button class="big-button" float-right color="tertiary"  (click)="save()" title="Guardar"><ion-icon size="large" name="checkbox"></ion-icon></ion-button>
           </ion-col>
         </ion-row>   
       </ion-grid>
@@ -126,7 +126,7 @@
       <ion-grid *ngIf="parte && parte.confirmado && parte.estadoParteProfesionalId != 2 && parte.estadoParteProfesionalId != 6">
         <ion-row>
           <ion-col size="12">
-            <ion-button float-right color="danger" (click)="deleteFirma()" title="Borrar firma"><ion-icon name="trash-outline"></ion-icon></ion-button>
+            <ion-button  class="big-button"  float-right color="danger" (click)="deleteFirma()" title="Borrar firma"><ion-icon size="large" name="trash-outline"></ion-icon></ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>

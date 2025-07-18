@@ -1,0 +1,25 @@
+.position-relative {
+  position: relative;
+}
+
+.notificacion-badge {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  z-index: 10;
+  font-size: 0.75rem;
+}
+.badge-wrapper {
+  position: relative;
+}
+
+.notificacion-badge {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  z-index: 10;
+  font-size: 0.75rem;
+  transform: scale(0.9);
+  pointer-events: none; // evita interferencia al hacer click
+   overflow: visible;
+}

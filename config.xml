@@ -25,6 +25,14 @@
     <preference name="WKWebViewOnly" value="true" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <platform name="android">
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application/activity[@android:name='MainActivity']" xmlns:android="http://schemas.android.com/apk/res/android">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="comercializa2" />
+            </intent-filter>
+        </edit-config>
         <hook src="hooks/copy_android_notification_icons.js" type="after_prepare" />
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:networkSecurityConfig="@xml/network_security_config" />
@@ -73,6 +81,10 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+        <plugin name="cordova-universal-links-plugin" spec="~1.2.1" />
+        <universal-links>
+            <host name="comercializa2.ariadnasw.com" scheme="https" />
+        </universal-links>
     </platform>
     <platform name="ios">
         <config-file parent="CFBundleURLTypes" target="*-Info.plist">
@@ -196,4 +208,7 @@
     </platform>
     <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
+    <plugin name="cordova-plugin-customurlscheme" spec="~4.4.0">
+        <variable name="URL_SCHEME" value="comercializa2" />
+    </plugin>
 </widget>

@@ -10,3 +10,10 @@ if (environment.production) {
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));
+
+  (window as any).deepLinkUrl = null;
+(window as any).handleOpenURL = (url: string) => {
+  console.log('handleOpenURL called with URL:', url);
+  (window as any).deepLinkUrl = url;
+};
+

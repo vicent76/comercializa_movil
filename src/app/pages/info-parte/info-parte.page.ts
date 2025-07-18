@@ -16,9 +16,9 @@ import * as moment from 'moment';
 })
 export class InfoPartePage implements OnInit {
 
- localesAfectados: any = [];
- usuario: any = {};
- parte: any = {}
+  localesAfectados: any = [];
+  usuario: any = {};
+  parte: any = {}
   parteModificado: any = {
     parteId: 0,
     numParte: '',
@@ -47,24 +47,24 @@ export class InfoPartePage implements OnInit {
     let espera = null;
     try {
       this.usuario = await this.usuarioService.getUsuario();
-      var id: any =  this.route.snapshot.paramMap.get('id');
+      var id: any = this.route.snapshot.paramMap.get('id');
       var id2 = parseInt(id);
       this.parte = this.comercializaService.getParteDetalleObj();
-      if(id2 == 0) {
+      if (id2 == 0) {
         espera = this.uiService.iniciarEspera();
         parteId = this.parte.parteId;
-        this.parteModificado.fechaSolicitudFormat = moment( this.parte.fecha_solicitud).format('DD-MM-YYYY');
+        this.parteModificado.fechaSolicitudFormat = moment(this.parte.fecha_solicitud).format('DD-MM-YYYY');
         this.localesAfectados = await this.comercializaService.getLocalesAfectadosServicioParte(this.parte.servicioId, parteId);
         this.comercializaService.guardarParteDetalleObj(this.parte);
-        (await espera).dismiss(); 
+        (await espera).dismiss();
       } else {
         espera = this.uiService.iniciarEspera();
-        this.parte =  await this.comercializaService.getParte(id2);
-        this.parteModificado.fechaSolicitudFormat = moment( this.parte.fecha_solicitud).format('DD-MM-YYYY');
+        this.parte = await this.comercializaService.getParte(id2);
+        this.parteModificado.fechaSolicitudFormat = moment(this.parte.fecha_solicitud).format('DD-MM-YYYY');
         parteId = this.parte.parteId;
         this.localesAfectados = await this.comercializaService.getLocalesAfectadosServicioParte(this.parte.servicioId, parteId);
         this.comercializaService.guardarParteDetalleObj(this.parte);
-        (await espera).dismiss(); 
+        (await espera).dismiss();
       }
 
       this.parteModificado.numParte = this.parte.numParte;
@@ -75,10 +75,10 @@ export class InfoPartePage implements OnInit {
       this.parteModificado.formaPagoCliente = this.parte.formaPagoCliente;
       this.parteModificado.direccionTrabajo = this.parte.direccionTrabajo;
       this.parteModificado.confirmado = this.parte.confirmado;
-       
-        
-    }catch(error) {
-      if(espera) (await espera).dismiss(); 
+
+
+    } catch (error) {
+      if (espera) (await espera).dismiss();
       this.uiService.controlDeError(error);
     }
   }
@@ -91,14 +91,6 @@ export class InfoPartePage implements OnInit {
         confirmado: 1
       }
     }
-    /* var data2 = {
-      parte: {
-        parteId: parteId,
-        proveedorId: this.usuario.usuarioId,
-        estadoParteProfesionalId: 1,
-        tipoProfesionalId: this.parte.tipoProfesionalId
-      }
-    } */
 
     var data3 = {
       datos: {
@@ -113,17 +105,19 @@ export class InfoPartePage implements OnInit {
         email: this.parte.email
       }
     }
+    const espera = this.uiService.iniciarEspera();
 
     try {
       await this.comercializaService.putParte(parteId, data);
       //await this.comercializaService.putParteSinAsignar(servicioId, data2);
       await this.comercializaService.sendNotificacionWeb(data3);
       await this.comercializaService.enviarCorreo(data3);
-  
+      (await espera).dismiss();
       this.uiService.presentToast('Se ha aceptado el parte');
       this.comercializaService.borrarParteDetalleObj();
       this.navCtrl.navigateForward("/partes/" + parteId);
     } catch (error: any) {
+      (await espera).dismiss();
       this.uiService.controlDeError(error);
     }
   }
@@ -149,15 +143,18 @@ export class InfoPartePage implements OnInit {
         email: this.parte.email
       }
     }
+    const espera = this.uiService.iniciarEspera();
     try {
       await this.comercializaService.putParte(parteId, data);
       this.comercializaService.borrarParteDetalleObj();
       await this.comercializaService.sendNotificacionWeb(data2);
-     
+
       await this.comercializaService.enviarCorreo(data2);
+      (await espera).dismiss();
       this.uiService.presentToast('Se ha rechazado el parte');
       this.navCtrl.navigateForward("/partes/0");
     } catch (error: any) {
+      (await espera).dismiss();
       this.uiService.controlDeError(error);
     }
   }
@@ -166,7 +163,7 @@ export class InfoPartePage implements OnInit {
     try {
       this.comercializaService.borrarParteDetalleObj();
       this.navCtrl.navigateForward("/partes/" + this.parte.parteId);
-    } catch(error) {
+    } catch (error) {
       this.uiService.controlDeError(error);
     }
   }
@@ -183,7 +180,7 @@ export class InfoPartePage implements OnInit {
       } else {
         this.callNumber.callNumber(telefono, true);
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     }
   }

@@ -516,6 +516,20 @@ export class ComercializaService {
     })
   }
 
+
+    putEstadoPushParte(parteId: number, proveedorUsuarioPushId: number, data: object) {
+    return new Promise(async (resolve, reject) => {
+      const empresa = await this.empresaService.getEmpresa();
+      this.http.put(`${empresa.url}/api/mensajes/push/parte/${parteId}/${proveedorUsuarioPushId}/`, data)
+        .subscribe(async (resp: any) => {
+          resolve(resp);
+        },
+          err => {
+            reject(err);
+          })
+    })
+  }
+
   sendNotificacionWeb(data: object)  {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();

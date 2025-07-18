@@ -146,7 +146,7 @@ export class GaleriaPage implements OnInit {
 
   takePictureFromGallery() {
     const options: CameraOptions = {
-      quality: 20,
+      quality: 50,
       destinationType: this.camera.DestinationType.FILE_URI,
       mediaType: this.camera.MediaType.PICTURE,
       encodingType: this.camera.EncodingType.JPEG,
@@ -191,9 +191,9 @@ export class GaleriaPage implements OnInit {
     const options: any = {
       width: 512,
       height: 512,
-      quality: 70
+      quality: 100
     };
-  
+    
     this.cameraPreview.takePicture(options).then(async (imageData) => {
       const base64 = 'data:image/jpeg;base64,' + imageData;
       const blob = this.base64ToBlob(base64);
