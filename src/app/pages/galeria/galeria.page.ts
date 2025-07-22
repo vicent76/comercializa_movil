@@ -194,14 +194,14 @@ export class GaleriaPage implements OnInit {
       quality: 70
     };
   
-    this.cameraPreview.takePicture(options).then(async (imageData) => {
+    this.cameraPreview.takePicture(options).then(async (imageData: string) => {
       const base64 = 'data:image/jpeg;base64,' + imageData;
       const blob = this.base64ToBlob(base64);
       const nombre = `${this.parte.numParte}_${this.empresa.codigo}_ID_${this.fotoId}_imagen.jpeg`;
   
       this.saveAPI(nombre, blob);
       this.stopCamera(); // opcional si quieres cerrar preview tras captura
-    }).catch(err => {
+    }).catch((err: any) => {
       this.uiService.controlDeError(err);
     });
   }
@@ -339,7 +339,7 @@ startCamera() {
 
   this.cameraPreview.startCamera(options).then(() => {
     this.cameraActive = true;
-  }).catch(err => {
+  }).catch((err: any) => {
     this.uiService.controlDeError(err);
   });
 }
@@ -347,7 +347,7 @@ startCamera() {
 stopCamera() {
   this.cameraPreview.stopCamera().then(() => {
     this.cameraActive = false;
-  }).catch(err => {
+  }).catch((err: any) => {
     this.uiService.controlDeError(err);
   });
 }
