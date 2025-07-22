@@ -1,12 +1,19 @@
 <ion-grid>
   <ion-row>
-    <ion-col size="6" (click)="goNotificaciones()">
-      <app-menu-card
-      imagen="bandeja-de-entrada.png"
-      titulo="Notificaciones"
-      contenido="Noticifaciones de servicios a realizar">
-    </app-menu-card>
-    </ion-col>
+    <ion-col size="6" (click)="goNotificaciones()" class="badge-wrapper">
+  <app-menu-card
+    imagen="bandeja-de-entrada.png"
+    titulo="Notificaciones"
+    contenido="Notificaciones de servicios a realizar">
+  </app-menu-card>
+
+  <ion-badge *ngIf="numNoLeidos > 0"
+             color="danger"
+             class="notificacion-badge">
+    {{ numNoLeidos }}
+  </ion-badge>
+</ion-col>
+
     <ion-col size="6" (click)="goPartes()">
       <app-menu-card
       imagen="servicio.png"

@@ -43,6 +43,27 @@ export class NotificacionesPage implements OnInit {
     }
   }
 
+    
+  async ionViewWillEnter() {
+    try {
+        const respuesta = await this.comercializaService.getNotificacionesUsuarioPush();
+        this.notificaciones = respuesta;
+      
+      this.notificaciones.forEach(s => {
+        s.presupuestoText = null;
+        s.urgenteText = null;
+        s.fechalecFormat = moment(s.fechalec).format('DD-MM-YYYY');
+        s.fechaFormat = moment(s.fecha).format('DD-MM-YYYY');
+        if(s.presupuesto == 1)  s.presupuestoText = "PRESUPUESTO";
+        if(s.urgente == 1)  s.urgenteText = "URGENTE";
+      });
+
+      
+    } catch (error: any) {
+      this.uiService.controlDeError(error);
+    }
+  }
+
  /*  async ionViewWillEnter() {
     try {
       this.notificacioneSelect  = this.route.snapshot.paramMap.get('id');

@@ -130,7 +130,11 @@ const routes: Routes = [
     path: 'modal-filtro-presupuestos',
     loadChildren: () => import('./modals/modal-filtro-presupuestos/modal-filtro-presupuestos.module').then( m => m.ModalFiltoPresupuestosPageModule)
   },
- 
+ {
+  path: 'tabs-parte/info-parte-tab/:id',
+  loadChildren: () => import('./pages/info-parte/info-parte.module').then(m => m.InfoPartePageModule)
+},
+
 
  
 

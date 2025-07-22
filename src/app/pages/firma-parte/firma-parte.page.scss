@@ -59,3 +59,38 @@ ion-item ion-label {
   width: 0;
 }
  
+.big-button {
+  height: 50px  !important;    /* Altura del botón */
+  width: 50px  !important;        /* Ancho del botón */
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.round-button {
+  --padding-start: 0;
+  --padding-end: 0;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  --border-radius: 50%;  /* compatible con Ionic internamente */
+}
+
+.round-button ion-icon {
+  font-size: 36px;
+}
+
+
+.big-checkbox {
+  --size: 28px;  /* tamaño total del checkbox */
+}
+
+.big-checkbox .checkbox-icon {
+  font-size: 24px;  /* tamaño del check mark */
+}
+
