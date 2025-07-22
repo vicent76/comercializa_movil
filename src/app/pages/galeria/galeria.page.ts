@@ -193,13 +193,8 @@ export class GaleriaPage implements OnInit {
       height: 512,
       quality: 100
     };
-<<<<<<< HEAD
   
     this.cameraPreview.takePicture(options).then(async (imageData: string) => {
-=======
-    
-    this.cameraPreview.takePicture(options).then(async (imageData) => {
->>>>>>> 4b4d6982940626d38d6881208c3d816018c94fc2
       const base64 = 'data:image/jpeg;base64,' + imageData;
       const blob = this.base64ToBlob(base64);
       const nombre = `${this.parte.numParte}_${this.empresa.codigo}_ID_${this.fotoId}_imagen.jpeg`;
