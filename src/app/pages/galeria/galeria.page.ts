@@ -146,7 +146,7 @@ export class GaleriaPage implements OnInit {
 
   takePictureFromGallery() {
     const options: CameraOptions = {
-      quality: 50,
+      quality: 70,
       destinationType: this.camera.DestinationType.FILE_URI,
       mediaType: this.camera.MediaType.PICTURE,
       encodingType: this.camera.EncodingType.JPEG,
