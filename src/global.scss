@@ -37,3 +37,15 @@
     font-size: 1.5em !important; 
     margin-bottom: 10px !important;
 }
+
+ion-content {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  background: #fff; // para ver que respeta las áreas
+}
+
+.footer-safe {
+  margin-bottom: env(safe-area-inset-bottom);
+}
