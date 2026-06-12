@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ComercializaService } from 'src/app/services/comercializa.service';
 import { UiService } from 'src/app/services/ui.service';
 import { NavController } from '@ionic/angular';
-import * as moment from 'moment';
+import moment from 'moment';
 
 
 @Component({

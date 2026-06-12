@@ -5,7 +5,7 @@ import { NavController, ModalController } from '@ionic/angular';
 import { UiService } from 'src/app/services/ui.service';
 import { ActivatedRoute } from '@angular/router';
 import { ModalFiltroPage } from '../../modals/modal-filtro/modal-filtro.page'
-import * as moment from 'moment';
+import moment from 'moment';
 
 
 @Component({

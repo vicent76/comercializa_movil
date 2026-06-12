@@ -7,7 +7,7 @@ import { NavController, ModalController } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import SignaturePad from 'signature_pad';
-import * as moment from 'moment';
+import moment from 'moment';
 
 
 

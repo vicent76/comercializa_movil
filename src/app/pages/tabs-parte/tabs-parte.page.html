@@ -1,7 +1,7 @@
 <ion-tabs>
 
   <ion-tab-bar slot="bottom" >
-    <ion-tab-button  tabTitle="info-parte" tab="info-parte-tab/0">
+    <ion-tab-button  [disabled]="comercializaService.cargandoParte" tabTitle="info-parte" tab="info-parte-tab/0">
       <ion-icon name="information-outline"></ion-icon>
       <ion-label>Información</ion-label>
     </ion-tab-button>
@@ -11,7 +11,7 @@
       <ion-label>Parte</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="trabajos-tab">
+    <ion-tab-button [disabled]="comercializaService.cargandoParte" tab="trabajos-tab">
       <ion-icon name="list"></ion-icon>
       <ion-label>Trabajos</ion-label>
     </ion-tab-button>
@@ -21,12 +21,12 @@
       <ion-label>Fotos</ion-label>
     </ion-tab-button> -->
 
-    <ion-tab-button tab="galeria-tab">
+    <ion-tab-button [disabled]="comercializaService.cargandoParte" tab="galeria-tab">
       <ion-icon name="images-outline"></ion-icon>
       <ion-label>Galería</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="firma-tab">
+    <ion-tab-button [disabled]="comercializaService.cargandoParte" tab="firma-tab">
       <ion-icon name="pencil-outline"></ion-icon>
       <ion-label>Firma</ion-label>
     </ion-tab-button>

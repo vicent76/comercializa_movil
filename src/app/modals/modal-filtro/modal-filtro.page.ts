@@ -3,7 +3,7 @@ import { UiService } from 'src/app/services/ui.service';;
 import { NgForm } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ComercializaService } from 'src/app/services/comercializa.service';
-import * as moment from 'moment'
+import moment from 'moment'
 
 @Component({
   selector: 'app-modal-filtro',

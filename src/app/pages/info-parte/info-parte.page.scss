@@ -5,13 +5,13 @@
 }
 
 .header-estile {
-    background-color: green!important;
+    background-color: green !important;
     border: 1px solid !important;
     color: blanchedalmond !important;
 }
 
 
-.item-background-color{
+.item-background-color {
     --ion-item-background: transparent !important;
 }
 
@@ -21,3 +21,39 @@ ion-col ion-label {
     font-weight: bold;
 }
 
+///
+
+.botonera-lineal {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 6px 8px;
+}
+
+.accion {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    height: 34px;
+    padding: 0 10px;
+
+    border: 1px solid #ddd;
+    border-radius: 17px;
+    background: #f7f7f7;
+
+    font-size: 11px;
+}
+
+.accion ion-icon {
+    font-size: 17px;
+}
+
+.accion.rechazar ion-icon,
+.accion.cancelar ion-icon {
+    color: var(--ion-color-danger);
+}
+
+.accion.aceptar ion-icon {
+    color: var(--ion-color-primary);
+}

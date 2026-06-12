@@ -3,8 +3,11 @@ import { ComercializaService } from 'src/app/services/comercializa.service';
 import { UiService } from 'src/app/services/ui.service';
 import { NavController, ModalController } from '@ionic/angular';
 import { TrabajoDetallePage } from '../../modals/trabajo-detalle/trabajo-detalle.page'
-import * as moment from 'moment';
-import * as numeral from 'numeral';
+import moment from 'moment';
+import numeral from 'numeral';
+import 'numeral/locales/es';
+
+numeral.locale('es');
 
 @Component({
   selector: 'app-trabajos',
@@ -18,34 +21,39 @@ export class TrabajosPage implements OnInit {
   modalTrabajosDetalle: any;
   importeClienteTotal: any = 0;
   importeClienteIvaTotal: any = 0;
-  clienteIvaTotal: any = 0
+  clienteIvaTotal: any = 0;
+  importeProveedorTotal: any = 0;
+  importeProveedorIvaTotal: any = 0;
 
   constructor(
     private comercializaService: ComercializaService,
     private navCtrl: NavController,
     private uiService: UiService,
     private modalCtrl: ModalController
-  
+
   ) { }
   async ngOnInit() {
     this.parte = this.comercializaService.getParteDetalleObj();
-    if(this.parte) {
+    if (this.parte) {
       this.mostrarTrabajos();
-    } 
+    }
   }
 
   async ionViewWillEnter() {
     this.parte = this.comercializaService.getParteDetalleObj();
-    if(this.parte) {
+    if (this.parte) {
       this.mostrarTrabajos();
-    } 
+    }
   }
 
-  async mostrarTrabajos () {
+  async mostrarTrabajos() {
     const espera = this.uiService.iniciarEspera();
     this.importeClienteTotal = 0;
     this.importeClienteIvaTotal = 0;
     this.clienteIvaTotal = 0;
+    this.importeProveedorTotal = 0;
+    this.importeProveedorIvaTotal = 0;
+
     try {
       this.trabajos = await this.comercializaService.getTrabajosParte(this.parte.parteId);
       (await espera).dismiss();
@@ -59,16 +67,19 @@ export class TrabajosPage implements OnInit {
           this.importeClienteTotal = this.importeClienteTotal + p.importeCliente;
           this.importeClienteIvaTotal = this.importeClienteIvaTotal + p.importeClienteIva;
           this.clienteIvaTotal = this.clienteIvaTotal + p.totalClienteIva;
+          this.importeProveedorTotal += parseFloat(p.importeProveedor || 0);
+          this.importeProveedorIvaTotal += parseFloat(p.importeProveedorIva || 0);        
         });
         this.importeClienteTotal = numeral(this.importeClienteTotal).format('0,0.00');
         this.importeClienteIvaTotal = numeral(this.importeClienteIvaTotal).format('0,0.00');
         this.clienteIvaTotal = numeral(this.clienteIvaTotal).format('0,0.00');
-       
+        this.importeProveedorTotal = numeral(this.importeProveedorTotal).format('0,0.00');
+        this.importeProveedorIvaTotal = numeral(this.importeProveedorIvaTotal).format('0,0.00');
       }
     } catch (error: any) {
       (await espera).dismiss();
       if (error.status === 500) {
-        this.uiService.controlDeError(error);      
+        this.uiService.controlDeError(error);
       } else {
         this.uiService.alertaInformativa(error.error);
       }
@@ -82,9 +93,9 @@ export class TrabajosPage implements OnInit {
     });
 
     this.modalTrabajosDetalle.onDidDismiss()
-    .then((data: any) => {
-      this.mostrarTrabajos();
-  });
+      .then((data: any) => {
+        this.mostrarTrabajos();
+      });
     return await this.modalTrabajosDetalle.present();
   }
 
@@ -95,13 +106,13 @@ export class TrabajosPage implements OnInit {
     });
 
     this.modalTrabajosDetalle.onDidDismiss()
-    .then((data: any) => {
-      this.mostrarTrabajos();
-    });
+      .then((data: any) => {
+        this.mostrarTrabajos();
+      });
 
     return await this.modalTrabajosDetalle.present();
   }
-  
+
   async borrarTrabajo(trabajo: any) {
     const espera = this.uiService.iniciarEspera();
     try {
@@ -109,15 +120,15 @@ export class TrabajosPage implements OnInit {
       (await espera).dismiss();
       this.uiService.alertaInformativa('Trabajo borrado correctamnente');
       this.mostrarTrabajos();
-      
-    } catch (error:any) {
+
+    } catch (error: any) {
       (await espera).dismiss();
       if (error.status === 500) {
-        this.uiService.controlDeError(error);      
+        this.uiService.controlDeError(error);
       } else {
         this.uiService.alertaInformativa(error.error);
       }
     }
   }
 
-  }
+}

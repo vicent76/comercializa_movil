@@ -4,7 +4,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { UiService } from 'src/app/services/ui.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import * as moment from 'moment'
+import moment from 'moment'
 
 
 @Component({
