@@ -5,9 +5,64 @@
 
 .color {
     background: #c0c5cc;
-   
+
 }
 
 ion-col {
     padding-left: 5%;
+}
+
+.total-label {
+    font-size: 0.75em;
+    color: #666;
+}
+
+.total-value {
+    font-size: 1.05em;
+    font-weight: 600;
+}
+
+.total-value.principal {
+    color: var(--ion-color-primary);
+}
+
+.total-profesional {
+    margin: 8px 20px 90px 20px;
+    padding: 10px 14px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background: #fafafa;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.total-profesional {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 10px 80px 10px;
+    padding: 12px 0;
+    background: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+}
+
+.importe {
+    text-align: center;
+}
+
+.titulo {
+    color: #888;
+    font-size: 0.8em;
+    margin-bottom: 4px;
+}
+
+.valor {
+    font-size: 1.35em;
+    font-weight: 600;
+    color: #333;
+}
+
+.valor.total {
+    color: var(--ion-color-primary);
 }

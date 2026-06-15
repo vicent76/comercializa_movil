@@ -10,7 +10,7 @@ import { UsuarioService } from './usuario.service';
 })
 export class ComercializaService {
 
-  parte:any = {};
+  parte: any = {};
   trabajo: any = {};
   presupuestoTrabajo: any = {};
   firma: any = {};
@@ -18,13 +18,15 @@ export class ComercializaService {
   //
   presupuesto: any = {};
 
+  cargandoParte: boolean = false;
+
   constructor(
     private http: HttpClient,
     private storage: Storage,
     private empresaService: EmpresaService,
     private usuarioService: UsuarioService,
     //private galeriaPage: GaleriaPage
-  ) { 
+  ) {
     this.storage.create();
   }
 
@@ -68,7 +70,7 @@ export class ComercializaService {
     })
   }
 
-  getPartesProveedor(proveedorId: number, opcion: boolean, fecha: any, hFecha: any, direccionTrabajo: string ): any {
+  getPartesProveedor(proveedorId: number, opcion: boolean, fecha: any, hFecha: any, direccionTrabajo: string): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.get(`${empresa.url}/api/partes/del/proveedor/${proveedorId}/${opcion}/${fecha}/${hFecha}/${direccionTrabajo}`)
@@ -94,7 +96,7 @@ export class ComercializaService {
     })
   }
 
-  
+
   getTrabajosParte(parteId: number): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
@@ -173,8 +175,8 @@ export class ComercializaService {
           })
     })
   }
-  
-  getTarifaProveedorProfesion(tipoPro:number, parArt:string): any {
+
+  getTarifaProveedorProfesion(tipoPro: number, parArt: string): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       const usuario = await this.usuarioService.getUsuario();
@@ -188,7 +190,7 @@ export class ComercializaService {
     })
   }
 
-  getTarifaProveedorProfesionCodigo(tipoPro:number, cod:string): any {
+  getTarifaProveedorProfesionCodigo(tipoPro: number, cod: string): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       const usuario = await this.usuarioService.getUsuario();
@@ -202,7 +204,7 @@ export class ComercializaService {
     })
   }
 
-  getTarifaProveedorProfesionCodigoNombre(tipoPro:number, parArt:string, cod:string): any {
+  getTarifaProveedorProfesionCodigoNombre(tipoPro: number, parArt: string, cod: string): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       const usuario = await this.usuarioService.getUsuario();
@@ -246,9 +248,9 @@ export class ComercializaService {
         );
     });
   } */
-  
 
-  getPrecioUnitarioCliente(clienteId:number, cod:string): any {
+
+  getPrecioUnitarioCliente(clienteId: number, cod: string): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.get(`${empresa.url}/api/clientes/tarifa/por/codigo/${clienteId}/${cod}`)
@@ -261,8 +263,8 @@ export class ComercializaService {
     })
   }
 
-  
-  getDatosCliente(clienteId:number): any {
+
+  getDatosCliente(clienteId: number): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.get(`${empresa.url}/api/clientes/${clienteId}`)
@@ -275,7 +277,7 @@ export class ComercializaService {
     })
   }
 
-  getTiposProyecto(usuId: number, departaMentoId:number, visible: boolean): any {
+  getTiposProyecto(usuId: number, departaMentoId: number, visible: boolean): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.get(`${empresa.url}/api/tipos_proyectos/departamento/visible-movil/profesion/${usuId}/${departaMentoId}/${visible}`)
@@ -327,7 +329,7 @@ export class ComercializaService {
     })
   }
 
-  
+
   postParte(data: object) {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
@@ -435,18 +437,18 @@ export class ComercializaService {
   }
 
   getLocalesAfectadosServicioParte(servicioId: number, parteId: number) {
-    return new Promise(async (resolve, reject)  => {
+    return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.get(`${empresa.url}/api/locales_afectados/servicio/parte/${servicioId}/${parteId}`)
-            .subscribe(async (resp: any) => {
-              resolve(resp);
-            },
-            err => {
-              reject(err);
-            })
+        .subscribe(async (resp: any) => {
+          resolve(resp);
+        },
+          err => {
+            reject(err);
           })
-            
-}
+    })
+
+  }
   // NOTIFICACIONES
 
   getNotificacionesUsuario(): any {
@@ -517,7 +519,7 @@ export class ComercializaService {
   }
 
 
-    putEstadoPushParte(parteId: number, proveedorUsuarioPushId: number, data: object) {
+  putEstadoPushParte(parteId: number, proveedorUsuarioPushId: number, data: object) {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.put(`${empresa.url}/api/mensajes/push/parte/${parteId}/${proveedorUsuarioPushId}/`, data)
@@ -530,7 +532,7 @@ export class ComercializaService {
     })
   }
 
-  sendNotificacionWeb(data: object)  {
+  sendNotificacionWeb(data: object) {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.post(`${empresa.url}/api/mensajes/send/webPush`, data)
@@ -543,7 +545,7 @@ export class ComercializaService {
     })
   }
 
-  enviarCorreo(data: object)  {
+  enviarCorreo(data: object) {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.post(`${empresa.url}/api/partes/enviar/correo/aceptar/cancelar/parte/general`, data)
@@ -556,7 +558,7 @@ export class ComercializaService {
     })
   }
 
-  enviarCorreoCerrado(data: object)  {
+  enviarCorreoCerrado(data: object) {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.post(`${empresa.url}/api/partes/enviar/correo/cierre/parte`, data)
@@ -625,7 +627,7 @@ export class ComercializaService {
     })
   }
 
-  
+
   //CREAR Y SUBIR PARTE STIMULSOFT
   putParteCreaPdf(servicioId: number, parteId: number, parte: any, codigo: number): any {
     return new Promise(async (resolve, reject) => {
@@ -640,8 +642,8 @@ export class ComercializaService {
     })
   }
 
- 
-  decodeData(data:any): any {
+
+  decodeData(data: any): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.post(`${empresa.url}/api/partes/decodifica/datos/del/parte/b64`, data)
@@ -667,10 +669,10 @@ export class ComercializaService {
           })
     })
   }
-  
- 
 
-  decodeFirma(data:any) {
+
+
+  decodeFirma(data: any) {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.post(`${empresa.url}/api/partes/decodifica/firma/del/parte/b64/jpg`, data)
@@ -736,7 +738,7 @@ export class ComercializaService {
 
   }
 
-  putOferta(data: any, ofertaId:number): any {
+  putOferta(data: any, ofertaId: number): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.put(`${empresa.url}/api/ofertas/${ofertaId}`, data)
@@ -751,8 +753,8 @@ export class ComercializaService {
   }
 
 
-  
-  putOfertaActualizaParte(data: any, ofertaId:number): any {
+
+  putOfertaActualizaParte(data: any, ofertaId: number): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.put(`${empresa.url}/api/ofertas/actualiza/parte`, data)
@@ -766,7 +768,7 @@ export class ComercializaService {
 
   }
 
-  obtenerReferencia(empresaId: number, rappel: number, ano:number): any {
+  obtenerReferencia(empresaId: number, rappel: number, ano: number): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.get(`${empresa.url}/api/ofertas/siguiente_referencia/reparaciones/${empresaId}/${rappel}/${ano}`)
@@ -805,7 +807,7 @@ export class ComercializaService {
     })
   }
 
-  
+
   putOfertaLinea(ofertaLineaId: number, data: object) {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
@@ -832,7 +834,7 @@ export class ComercializaService {
     });
   }
 
-  
+
   deleteOfertaLinea(ofertaLineaId: number, data: object) {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
@@ -846,7 +848,7 @@ export class ComercializaService {
     })
   }
 
-  enviarCorreoGeneral(data: object)  {
+  enviarCorreoGeneral(data: object) {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
       this.http.post(`${empresa.url}/api/ofertas/enviar/correo`, data)
@@ -885,7 +887,7 @@ export class ComercializaService {
     })
   }
 
-  
+
   crearMrt(data: any): any {
     return new Promise(async (resolve, reject) => {
       const empresa = await this.empresaService.getEmpresa();
@@ -904,19 +906,19 @@ export class ComercializaService {
       const fileUrl = datos.url;
 
       this.http.get(fileUrl, { responseType: 'blob' })
-      .subscribe((blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = datos.nomfich;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-        resolve('OK')
-      }, err => {
-        reject(err);
-      });
+        .subscribe((blob: Blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = datos.nomfich;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+          resolve('OK')
+        }, err => {
+          reject(err);
+        });
     });
   }
 
@@ -926,8 +928,8 @@ export class ComercializaService {
 
   /////////////////////////////////////////////
 
-  
-  
+
+
 
   async guardarEstadoCheck(estado: boolean) {
     await this.storage.set('estado-check', estado);
@@ -972,12 +974,12 @@ export class ComercializaService {
     await this.storage.set('comercializa-parte-detalle', parte);
   }
  */
- 
 
 
-/*   async borrarParteDetalle() {
-    await this.storage.remove('comercializa-parte-detalle');
-  } */
+
+  /*   async borrarParteDetalle() {
+      await this.storage.remove('comercializa-parte-detalle');
+    } */
 
 
   /* async getParteDetalle() {
@@ -998,7 +1000,7 @@ export class ComercializaService {
   borrarParteDetalleObj() {
     this.parte = {};
   }
-  
+
 
   guardarTrabajoDetalleObj(trabajo: {}) {
     this.trabajo = trabajo;
@@ -1043,32 +1045,32 @@ export class ComercializaService {
   }
 
 
- /*  async guardarTrabajoDetalle(trabajo) {
-    await this.storage.set('comercializa-trabajo-detalle', trabajo);
-  }
+  /*  async guardarTrabajoDetalle(trabajo) {
+     await this.storage.set('comercializa-trabajo-detalle', trabajo);
+   }
+ 
+   async borrarTrabajoDetalle() {
+     await this.storage.remove('comercializa-trabajo-detalle');
+   }
+ 
+   async getTrabajoDetalle() {
+     const trabajo = await this.storage.get('comercializa-trabajo-detalle');
+     return trabajo;
+   } */
 
-  async borrarTrabajoDetalle() {
-    await this.storage.remove('comercializa-trabajo-detalle');
-  }
-
-  async getTrabajoDetalle() {
-    const trabajo = await this.storage.get('comercializa-trabajo-detalle');
-    return trabajo;
-  } */
-
- /*  async guardarMensajeDetalle(mensaje) {
-    await this.storage.set('comercializa-mensaje-detalle', mensaje);
-  }
-
-  async getMensajeDetalle() {
-    const mensaje = await this.storage.get('comercializa-mensaje-detalle');
-    return mensaje;
-  }
-
-  async borrarMensajeDetalle() {
-    await this.storage.remove('comercializa-mensaje-detalle');
-  }
- */
+  /*  async guardarMensajeDetalle(mensaje) {
+     await this.storage.set('comercializa-mensaje-detalle', mensaje);
+   }
+ 
+   async getMensajeDetalle() {
+     const mensaje = await this.storage.get('comercializa-mensaje-detalle');
+     return mensaje;
+   }
+ 
+   async borrarMensajeDetalle() {
+     await this.storage.remove('comercializa-mensaje-detalle');
+   }
+  */
   guardarMensajeDetalleObj(mensaje: {}) {
     this.mensaje = mensaje;
   }
@@ -1137,7 +1139,7 @@ export class ComercializaService {
     return imagen;
   }
 
-  async guardarAntParte(antParte:any) {
+  async guardarAntParte(antParte: any) {
     await this.storage.set('comercializa-antParte', antParte);
   }
 

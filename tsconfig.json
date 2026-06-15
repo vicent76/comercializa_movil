@@ -18,12 +18,16 @@
     "importHelpers": true,
     "target": "es2022",
     "module": "es2020",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "lib": [
-      "es2018", 
+      "es2018",
       "dom"
     ],
     "useDefineForClassFields": false,
-    "types": ["node"]  // Asegúrate de agregar esta línea
+    "types": [
+      "node"
+    ] // Asegúrate de agregar esta línea
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

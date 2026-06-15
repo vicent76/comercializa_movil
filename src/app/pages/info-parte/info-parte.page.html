@@ -67,34 +67,30 @@
    
 </ion-content>
 <ion-toolbar>
-  <div *ngIf="parteModificado.confirmado == 0">
-    <form  (ngSubmit)="aceptar()">
-      <ion-grid  fixed class="ion-text-center">
-          <ion-row>
-            <ion-col>
-              <ion-button shape="round" (click)="rechazar()" color="danger">RECHAZAR</ion-button>
-            </ion-col>
-            <ion-col>
-              <ion-button type="submit"
-                          shape="round">
-                ACEPTAR
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </form>
-    </div>
-    <div *ngIf="parteModificado.confirmado == 1">
-      <form  (ngSubmit)="aceptar()">
-        <ion-grid  fixed class="ion-text-center">
-            <ion-row>
-              <ion-col>
-                <ion-button shape="round" (click)="cancelar()" color="danger">CANCELAR</ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </form>
-      </div>
+
+  <div class="botonera-lineal" *ngIf="parteModificado.confirmado == 0">
+
+    <button class="accion rechazar" (click)="rechazar()">
+      <ion-icon name="close"></ion-icon>
+      <span>Rechazar</span>
+    </button>
+
+    <button class="accion aceptar" (click)="aceptar()">
+      <ion-icon name="checkmark"></ion-icon>
+      <span>Aceptar</span>
+    </button>
+
+  </div>
+
+  <div class="botonera-lineal" *ngIf="parteModificado.confirmado == 1">
+
+    <button class="accion cancelar" (click)="cancelar()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+      <span>Cancelar</span>
+    </button>
+
+  </div>
+
 </ion-toolbar>
 
 <app-footer></app-footer>

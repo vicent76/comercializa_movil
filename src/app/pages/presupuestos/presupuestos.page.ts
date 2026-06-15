@@ -6,7 +6,7 @@ import { UiService } from 'src/app/services/ui.service';
 import { ActivatedRoute } from '@angular/router';
 import { ModalFiltroPresupuestosPage } from '../../modals/modal-filtro-presupuestos/modal-filtro-presupuestos.page';
 import { PresupuestoDetallePage } from '../presupuesto-detalle/presupuesto-detalle.page'
-import * as moment from 'moment';
+import moment from 'moment';
 
 
 @Component({

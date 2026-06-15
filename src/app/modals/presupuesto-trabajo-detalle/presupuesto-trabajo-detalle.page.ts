@@ -6,8 +6,8 @@ import { NavController, ModalController, NavParams } from '@ionic/angular';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 
-import * as moment from 'moment';
-import * as numeral from 'numeral';
+import moment from 'moment';
+import numeral from 'numeral';
 
 @Component({
   selector: 'app-presupuesto-trabajo-detalle',

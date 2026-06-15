@@ -37,3 +37,12 @@
     font-size: 1.5em !important; 
     margin-bottom: 10px !important;
 }
+
+body, ion-app {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.footer-safe {
+  margin-bottom: env(safe-area-inset-bottom);
+}

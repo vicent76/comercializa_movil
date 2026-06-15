@@ -6,7 +6,7 @@ import { NavController, Platform } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 import { Clipboard } from '@awesome-cordova-plugins/clipboard/ngx';
-import * as moment from 'moment';
+import moment from 'moment';
 
 
 @Component({

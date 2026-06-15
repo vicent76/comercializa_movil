@@ -33,18 +33,15 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
-  <ion-toolbar>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <form  (ngSubmit)="salir()">
-            <ion-button icon-only type="submit" title="Salir">
-              <ion-icon name="checkbox"></ion-icon>
-            </ion-button>
-          </form>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
+<ion-toolbar>
+  <div class="botonera-lineal">
+
+    <button class="accion guardar" (click)="salir()" title="Salir">
+      <ion-icon name="checkbox"></ion-icon>
+      <span>Aceptar</span>
+    </button>
+
+  </div>
+</ion-toolbar>
 
 <app-footer></app-footer>

@@ -38,8 +38,10 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
       this.splashScreen.hide();
+       // Status bar transparente y contenido Edge-to-Edge
+      this.statusBar.overlaysWebView(true);
+      this.statusBar.backgroundColorByHexString('#00000000');
     });
   }
 

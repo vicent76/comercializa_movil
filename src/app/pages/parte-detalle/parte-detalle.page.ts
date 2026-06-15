@@ -10,7 +10,7 @@ import { IonDatetime } from '@ionic/angular';
 
 import { PresupuestoDetallePage } from '../presupuesto-detalle/presupuesto-detalle.page'
 
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-parte-detalle',
@@ -26,9 +26,9 @@ export class ParteDetallePage implements OnInit {
   @ViewChild('fparte', { static: true })
   userFrm!: NgForm;
 
-  
 
-  prueba:boolean = false;
+
+  prueba: boolean = false;
   parte: any = {};
   parteId: any = 0;
   parteModificado: any = {
@@ -37,10 +37,10 @@ export class ParteDetallePage implements OnInit {
     empresa: '',
     fecha_reparacion: null,
     descripcion_averia: '',
-    trabajosPendientes : '',
+    trabajosPendientes: '',
     servicioId: 0,
     numServicio: 0,
-    estadoParteProfesionalId: 0, 
+    estadoParteProfesionalId: 0,
     formaPagoCliente: '',
     estadoParteId: 2,
     proveedorId: 0,
@@ -60,7 +60,7 @@ export class ParteDetallePage implements OnInit {
     refPresupuesto: '',
     ofertaId: 0,
 
-    
+
     nombreFirmante: null,
     apellidosFirmante: null,
     dniFirmante: null,
@@ -83,6 +83,7 @@ export class ParteDetallePage implements OnInit {
   fechaFormateada = '';
 
 
+
   constructor(
     private comercializaService: ComercializaService,
     private usuarioService: UsuarioService,
@@ -90,21 +91,21 @@ export class ParteDetallePage implements OnInit {
     private uiService: UiService,
     private modalCtrl: ModalController,
     private route: ActivatedRoute
-  ) { 
-   
+  ) {
+
   }
   async ngOnInit() {
     this.propagacion = true;
-    this.init(true);
+    await this.init(true);
   }
 
-  
- ionViewDidEnter = async () => {
-   if(this.propagacion) {
-     this.propagacion = false;
-   } else {
-    this.init(false);
-   }
+
+  ionViewDidEnter = async () => {
+    if (this.propagacion) {
+      this.propagacion = false;
+    } else {
+      await this.init(false);
+    }
   }
 
   formatDate(date: string) {
@@ -130,86 +131,98 @@ export class ParteDetallePage implements OnInit {
     input.click();
     document.body.removeChild(input);
   }
-  
+
   onDateChange(event: CustomEvent) {
     // Maneja el cambio de fecha
     const selectedDate = event.detail.value;
     this.parteModificado.fecha_reparacion = selectedDate;
   }
 
-  
 
-   init = async(opcion: boolean) => {
+
+  init = async (opcion: boolean) => {
+    const espera = this.uiService.iniciarEspera();
+    this.comercializaService.cargandoParte = true;
+
     try {
       this.usuario = await this.usuarioService.getUsuario();
       console.log(this.usuario);
       var datos = null
-      var id: any =  this.route.snapshot.paramMap.get('id');
+      var id: any = this.route.snapshot.paramMap.get('id');
       var id2 = parseInt(id);
       datos = await this.comercializaService.getParteDetalleObj();
-      if(id2 > 0 && !datos) {
-        datos  =  await this.comercializaService.getParte(id2);
+      if (id2 > 0 && !datos) {
+        datos = await this.comercializaService.getParte(id2);
         this.parte = datos;
       } else {
         this.parte = datos;
       }
-     
+
       var cerrado = 'false';
-      if(this.parte.estadoParteProfesionalId == 6 || this.parte.estadoParteProfesionalId == 2) cerrado = 'true'
+      if (this.parte.estadoParteProfesionalId == 6 || this.parte.estadoParteProfesionalId == 2) cerrado = 'true';
+
+
       this.estados = await this.comercializaService.getEstadosParteEstado(cerrado);
       this.tiposGarantia = await this.comercializaService.getTiposGarantia();
       this.tiposProfesionales = await this.comercializaService.getTiposProfesionalesProveedor();
-      
-  
-      
-        this.confirmado = this.parte.confirmado;
-        this.parteModificado.confirmado = this.parte.confirmado;
-        this.imagenes = await this.comercializaService.getParteFotos(this.parte.parteId);
-        this.parteModificado.parteId = this.parte.parteId;
-        this.parteModificado.numParte = this.parte.numParte;
-        this.parteModificado.empresa = this.parte.empresa;
-        if(opcion) {
-          this.parteModificado.estadoParteProfesionalId = this.parte.estadoParteProfesionalId;
-          this.parteModificado.tipoGarantiaId = this.parte.tipoGarantiaId;
-          if(this.parte.fecha_reparacion) {
-            this.parteModificado.fecha_reparacion = this.parte.fecha_reparacion;
-            this.formatDate(this.parte.fecha_reparacion);
-          }
-          this.parteModificado.trabajos_realizados = this.parte.trabajos_realizados;
-          this.parteModificado.descripcion_averia = this.parte.descripcion_averia;
-          this.parteModificado.trabajosPendientes  = this.parte.trabajosPendientes;
-          this.parteModificado.observacionesDelProfesional = this.parte.observacionesDelProfesional;
+
+
+
+      this.confirmado = this.parte.confirmado;
+      this.parteModificado.confirmado = this.parte.confirmado;
+      this.imagenes = await this.comercializaService.getParteFotos(this.parte.parteId);
+      this.parteModificado.parteId = this.parte.parteId;
+      this.parteModificado.numParte = this.parte.numParte;
+      this.parteModificado.empresa = this.parte.empresa;
+      if (opcion) {
+        this.parteModificado.estadoParteProfesionalId = this.parte.estadoParteProfesionalId;
+        this.parteModificado.tipoGarantiaId = this.parte.tipoGarantiaId;
+        if (this.parte.fecha_reparacion) {
+          this.parteModificado.fecha_reparacion = this.parte.fecha_reparacion;
+          this.formatDate(this.parte.fecha_reparacion);
         }
-        
-        this.parteModificado.observacionesProfesional = this.parte.observacionesProfesional;
-        this.parteModificado.fecha_solicitud = this.parte.fecha_solicitud;
-        this.parteModificado.formaPagoCliente = this.parte.formaPagoCliente;
-        this.parteModificado.servicioId = this.parte.servicioId;
-        this.parteModificado.numServicio = this.parte.numServicio;
-        this.parteModificado.tipoProfesionalId = this.parte.tipoProfesionalId;
-        this.parteModificado.proveedorId = this.parte.proveedorId;
-        this.parteModificado.empresaParteId = this.parte.empresaParteId;
-        this.parteModificado.operadorId = this.parte.operadorId;
-        this.parteModificado.email = this.parte.email;
-        this.parteModificado.clienteId = this.parte.clienteId;
-        this.parteModificado.porcentajeIvaCliente = this.parte.porcentajeIvaCliente;
-        this.parteModificado.tipoIvaClienteId = this.parte.tipoIvaClienteId;
-        this.parteModificado.direccionTrabajo = this.parte.direccionTrabajo;
-        this.parteModificado.refPresupuesto = this.parte.refPresupuesto;
-        this.parteModificado.ofertaId = this.parte.ofertaId
-       
-         //
-         this.parteModificado.nombreFirmante = this.parte.nombreFirmante;
-         this.parteModificado.apellidosFirmante = this.parte.apellidosFirmante;
-         this.parteModificado.dniFirmante = this.parte.dniFirmante;
-         this.parteModificado.cargoFirmante = this.parte.cargoFirmante;
-         this.parteModificado.firma = this.parte.firma;
-         this.parteModificado.noFirma = this.parte.noFirma;
-       
-         this.comercializaService.guardarParteDetalleObj(this.parteModificado);
-        
-    }catch(error) {
+        this.parteModificado.trabajos_realizados = this.parte.trabajos_realizados;
+        this.parteModificado.descripcion_averia = this.parte.descripcion_averia;
+        this.parteModificado.trabajosPendientes = this.parte.trabajosPendientes;
+        this.parteModificado.observacionesDelProfesional = this.parte.observacionesDelProfesional;
+      }
+
+      this.parteModificado.observacionesProfesional = this.parte.observacionesProfesional;
+      this.parteModificado.fecha_solicitud = this.parte.fecha_solicitud;
+      this.parteModificado.formaPagoCliente = this.parte.formaPagoCliente;
+      this.parteModificado.servicioId = this.parte.servicioId;
+      this.parteModificado.numServicio = this.parte.numServicio;
+      this.parteModificado.tipoProfesionalId = this.parte.tipoProfesionalId;
+      this.parteModificado.proveedorId = this.parte.proveedorId;
+      this.parteModificado.empresaParteId = this.parte.empresaParteId;
+      this.parteModificado.operadorId = this.parte.operadorId;
+      this.parteModificado.email = this.parte.email;
+      this.parteModificado.clienteId = this.parte.clienteId;
+      this.parteModificado.porcentajeIvaCliente = this.parte.porcentajeIvaCliente;
+      this.parteModificado.tipoIvaClienteId = this.parte.tipoIvaClienteId;
+      this.parteModificado.direccionTrabajo = this.parte.direccionTrabajo;
+      this.parteModificado.refPresupuesto = this.parte.refPresupuesto;
+      this.parteModificado.ofertaId = this.parte.ofertaId
+
+      //
+      this.parteModificado.nombreFirmante = this.parte.nombreFirmante;
+      this.parteModificado.apellidosFirmante = this.parte.apellidosFirmante;
+      this.parteModificado.dniFirmante = this.parte.dniFirmante;
+      this.parteModificado.cargoFirmante = this.parte.cargoFirmante;
+      this.parteModificado.firma = this.parte.firma;
+      this.parteModificado.noFirma = this.parte.noFirma;
+
+      this.comercializaService.guardarParteDetalleObj(this.parteModificado);
+
+      (await espera).dismiss();
+
+    } catch (error) {
       this.uiService.controlDeError(error);
+    } finally {
+      this.comercializaService.cargandoParte = false;
+      if (espera) {
+        (await espera).dismiss();
+      }
     }
   }
 
@@ -220,37 +233,37 @@ export class ParteDetallePage implements OnInit {
 
 
 
-   guardarCabeceraParte = async (fparte:NgForm) => {
+  guardarCabeceraParte = async (fparte: NgForm) => {
     if (fparte.invalid) {
       await this.uiService.alertaInformativa('Debe rellenar los campos correctamente');
       return;
     }
-    if(this.parteModificado.estadoParteProfesionalId == 2) {
-      if(!this.imagenes) {
+    if (this.parteModificado.estadoParteProfesionalId == 2) {
+      if (!this.imagenes) {
         await this.uiService.alertaInformativa('Para cerrar el parte es obligatorio que haya al menos una imagen.');
         return;
-      } 
-    } 
+      }
+    }
 
-    if(this.parteModificado.estadoParteProfesionalId == 0) {
+    if (this.parteModificado.estadoParteProfesionalId == 0) {
       await this.uiService.alertaInformativa('Debe rellenar los campos correctamente');
       return;
     }
-         //formateamos la fecha para la base de datos
+    //formateamos la fecha para la base de datos
 
-    var fecha_reparacion: any =  moment(this.parteModificado.fecha_reparacion).format('YYYY-MM-DD');
-    if(fecha_reparacion == 'Invalid date') fecha_reparacion = null;
+    var fecha_reparacion: any = moment(this.parteModificado.fecha_reparacion).format('YYYY-MM-DD');
+    if (fecha_reparacion == 'Invalid date') fecha_reparacion = null;
 
 
-   
+
     var data = {
       parte: {
         parteId: 0,
         fecha_reparacion: fecha_reparacion,
         descripcion_averia: this.parteModificado.descripcion_averia,
-        trabajosPendientes : this.parteModificado.trabajosPendientes ,
+        trabajosPendientes: this.parteModificado.trabajosPendientes,
         servicioId: this.parte.servicioId,
-        estadoParteProfesionalId: this.parteModificado.estadoParteProfesionalId, 
+        estadoParteProfesionalId: this.parteModificado.estadoParteProfesionalId,
         proveedorId: this.parteModificado.proveedorId,
         empresaParteId: this.parteModificado.empresaParteId,
         estadoParteId: this.parteModificado.estadoParteId,
@@ -259,14 +272,14 @@ export class ParteDetallePage implements OnInit {
         tipoGarantiaId: this.parteModificado.tipoGarantiaId
       }
     }
-    if(this.parteModificado.parteId) {
+    if (this.parteModificado.parteId) {
       var id = this.parteModificado.parteId
       data.parte.parteId = this.parte.parteId
       try {
         await this.comercializaService.putParte(id, data);
         this.uiService.presentToast('Parte modificado correctamente');
         this.comercializaService.guardarParteDetalleObj(this.parteModificado);
-        if(this.parteModificado.estadoParteProfesionalId != 2) {
+        if (this.parteModificado.estadoParteProfesionalId != 2) {
           this.navCtrl.navigateForward("tabs-parte/parte-tab/" + 0);
         } else {
           this.navCtrl.navigateForward("/partes/" + this.parteModificado.parteId);
@@ -289,40 +302,40 @@ export class ParteDetallePage implements OnInit {
       return f.id === newform;
     });
     this.company.form=selectedForm; */
-}
+  }
 
-cancelar = async() => {
-  this.navCtrl.navigateForward("/partes/" + this.parte.parteId);
-}
+  cancelar = async () => {
+    this.navCtrl.navigateForward("/partes/" + this.parte.parteId);
+  }
 
-openModalFirma = async () => {
+  openModalFirma = async () => {
     this.modalFirma = await this.modalCtrl.create({
       component: FirmaPartePage
     });
 
     this.modalFirma.onDidDismiss()
-    .then((data: any) => {
-      
-  });
+      .then((data: any) => {
+
+      });
     return await this.modalFirma.present();
-}
+  }
 
-submit() {
-  this.guardarCabeceraParte(this.userFrm);
-}
+  submit() {
+    this.guardarCabeceraParte(this.userFrm);
+  }
 
- openFrmPresupuesto = async () => {
-  this.modalPresupuestoDetalle = await this.modalCtrl.create({
-    component: PresupuestoDetallePage,
-  });
+  openFrmPresupuesto = async () => {
+    this.modalPresupuestoDetalle = await this.modalCtrl.create({
+      component: PresupuestoDetallePage,
+    });
 
-  this.modalPresupuestoDetalle.onDidDismiss()
-  .then((data: any) => {
-   this.init(false)
-  });
+    this.modalPresupuestoDetalle.onDidDismiss()
+      .then((data: any) => {
+        this.init(false)
+      });
 
-  return await this.modalPresupuestoDetalle.present();
-}
+    return await this.modalPresupuestoDetalle.present();
+  }
 
-  
+
 }
