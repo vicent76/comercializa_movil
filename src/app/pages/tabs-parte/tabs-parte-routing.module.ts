@@ -29,11 +29,7 @@ children: [
     loadChildren: () => import('../firma-parte/firma-parte.module')
     .then( m => m.ModalFirmaPageModule)
   },
-  {
-    path: 'fotos-tab',
-    loadChildren: () => import('../fotos/fotos.module')
-    .then( m => m.FotosPageModule)
-  },
+ 
   {
     path: 'galeria-tab',
     loadChildren: () => import('../galeria/galeria.module')

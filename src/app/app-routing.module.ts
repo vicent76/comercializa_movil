@@ -82,11 +82,6 @@ const routes: Routes = [
     .then( m => m.GaleriaPageModule)
   },
   {
-    path: 'fotos-tab',
-    loadChildren: () => import('./pages/fotos/fotos.module')
-    .then( m => m.FotosPageModule)
-  },
-  {
     path: 'notificacion-detalle/:id',
     loadChildren: () => import('./pages/notificacion-detalle/notificacion-detalle.module').then( m => m.NotificacionDetallePageModule)
   },
@@ -102,10 +97,7 @@ const routes: Routes = [
     path: 'modal-filtro',
     loadChildren: () => import('./modals/modal-filtro/modal-filtro.module').then( m => m.ModalFiltroPageModule)
   },
-  {
-    path: 'fotos',
-    loadChildren: () => import('./pages/fotos/fotos.module').then( m => m.FotosPageModule)
-  },
+ 
   {
     path: 'galeria',
     loadChildren: () => import('./pages/galeria/galeria.module').then( m => m.GaleriaPageModule)
