@@ -54,6 +54,7 @@
         </universal-links>
     </platform>
     <platform name="ios">
+        <preference name="deployment-target" value="13.0" />
         <config-file parent="CFBundleURLTypes" target="*-Info.plist">
             <array>
                 <dict>
